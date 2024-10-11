@@ -11,10 +11,15 @@ class Category extends Model
 
 
     // FILLABLE
-    
+
     protected $fillable = [
         'name',
         'description',
         'icon',
     ];
+
+
+    
+    // RELATIONS
+
 }

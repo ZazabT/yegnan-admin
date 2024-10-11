@@ -29,7 +29,7 @@ class UserAuthController extends Controller
                     'success' => false,
                     'message' => 'Validation errors',
                     'errors' => $validator->errors()
-                ], 422); // Unprocessable entity
+                ]); // Unprocessable entity
             }
     
             // Create a new user
