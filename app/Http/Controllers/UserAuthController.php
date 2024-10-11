@@ -140,9 +140,9 @@ class UserAuthController extends Controller
             // Ensure the user is authenticated
             if (!$request->user()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => 401,
                     'message' => 'Not authenticated',
-                ], 401); // Unauthorized
+                ]); // Unauthorized
             }
 
             // Check if the user has any active tokens
@@ -151,22 +151,28 @@ class UserAuthController extends Controller
                 $request->user()->currentAccessToken()->delete();
             } else {
                 return response()->json([
-                    'success' => false,
+                    'status' => 404,
                     'message' => 'No active token found',
-                ], 404); // Not Found
+                ]); // Not Found
             }
 
             return response()->json([
-                'success' => true,
+                'status' => 200,
                 'message' => 'Logged out successfully',
-            ], 200); // Success
+            ],); // Success
 
         } catch (Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => 500,
                 'message' => 'Logout failed',
                 'error' => $e->getMessage(),
-            ], 500); // Internal server error
+            ]); // Internal server error
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Logout failed',
+                'error' => $e->getMessage(),
+            ]); // Internal server error
         }
     }
 }
