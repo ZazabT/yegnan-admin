@@ -19,9 +19,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+       'firstName',
+       'lastName',
+       'email',
+       'password',
+       'isHomeOwner',
+       'age',  
     ];
 
     /**
@@ -45,5 +48,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    // Relation with Listings
+    public function listings()
+    {
+        return $this->hasMany(Listing::class);
     }
 }

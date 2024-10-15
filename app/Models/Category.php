@@ -22,4 +22,8 @@ class Category extends Model
     
     // RELATIONS
 
+    public function listings()
+    {
+        return $this->belongsToMany(Listing::class, 'category_listing');
+    }
 }

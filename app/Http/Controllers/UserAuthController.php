@@ -18,33 +18,31 @@ class UserAuthController extends Controller
         try {
             // Validate input data, including password confirmation
             $validator = Validator::make($request->all(), [
-                'name' => ['required', 'string', 'max:255'],
+                'firstName' => ['required', 'string', 'max:255'],
+                'lastName' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'age' => ['required', 'integer', 'min:18', 'max:120'],
             ]);
     
             // Check if validation fails
             if ($validator->fails()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => 422,
                     'message' => 'Validation errors',
                     'errors' => $validator->errors()
-                ]); // Unprocessable entity
+                ] , 422); // Unprocessable entity
             }
     
             // Create a new user
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+            $user = User::create($validator->validated());
     
             // Ensure user creation was successful
             if (!$user) {
                 return response()->json([
                     'status' => 500,
                     'message' => 'User registration failed',
-                ]); // Internal server error
+                ],500); // Internal server error
             }
     
             // Create token for the new user
@@ -55,20 +53,20 @@ class UserAuthController extends Controller
                 'message' => 'User registered successfully',
                 'access_token' => $token,
                 'user' => $user,
-            ]); // Created successfully
+            ] , 201); // Created successfully
     
         } catch (Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Registration failed',
                 'error' => $e->getMessage(),
-            ]); // Internal server error
+            ], 500); // Internal server error
         } catch (QueryException $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Registration failed',
                 'error' => $e->getMessage(),
-            ]); // Internal server error
+            ],500); // Internal server error
         }
     }
     
@@ -89,7 +87,7 @@ class UserAuthController extends Controller
                     'status' => 422,
                     'message' => 'Validation errors',
                     'errors' => $validator->errors()
-                ]); // Unprocessable entity
+                ],422); // Unprocessable entity
             }
 
             // Attempt to login
@@ -97,7 +95,7 @@ class UserAuthController extends Controller
                 return response()->json([
                     'status' => 401,
                     'message' => 'Invalid login details',
-                ],); // Unauthorized
+                ],401); // Unauthorized
             }
 
             // Retrieve user and create token
@@ -106,7 +104,7 @@ class UserAuthController extends Controller
                 return response()->json([
                     'status' => 404,
                     'message' => 'User not found',
-                ],); // Not Found
+                ],404); // Not Found
             }
 
             $token = $user->createToken('auth_token')->plainTextToken;
@@ -116,20 +114,20 @@ class UserAuthController extends Controller
                 'access_token' => $token,
                 'user' => $user,
                 'token_type' => 'Bearer',
-            ],); // Success
+            ],200); // Success
 
         } catch (Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Login failed',
                 'error' => $e->getMessage(),
-            ]); // Internal server error
+            ],500); // Internal server error
         } catch (QueryException $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Login failed',
                 'error' => $e->getMessage(),
-            ]); // Internal server error
+            ],500); // Internal server error
         }
     }
 
@@ -142,7 +140,7 @@ class UserAuthController extends Controller
                 return response()->json([
                     'status' => 401,
                     'message' => 'Not authenticated',
-                ]); // Unauthorized
+                ],401); // Unauthorized
             }
 
             // Check if the user has any active tokens
@@ -153,26 +151,26 @@ class UserAuthController extends Controller
                 return response()->json([
                     'status' => 404,
                     'message' => 'No active token found',
-                ]); // Not Found
+                ],404); // Not Found
             }
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Logged out successfully',
-            ],); // Success
+            ],200); // Success
 
         } catch (Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Logout failed',
                 'error' => $e->getMessage(),
-            ]); // Internal server error
+            ],500); // Internal server error
         } catch (QueryException $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Logout failed',
                 'error' => $e->getMessage(),
-            ]); // Internal server error
+            ],500); // Internal server error
         }
     }
 }
