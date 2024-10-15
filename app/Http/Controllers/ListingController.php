@@ -16,69 +16,60 @@ class ListingController extends Controller
         try {
             // Ensure the user is authenticated
             if (!Auth::check()) {
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'User not authenticated',
-                ], 401);
+                return response()->json(['message' => 'Unauthorized'], 401);
             }
-    
-            $validatedListing = $request->validate([
-                'title' => ['required', 'string', 'max:255'],
-                'description' => ['required', 'string'],
-                'address' => ['required', 'string', 'max:255'],
-                'city' => ['required', 'string', 'max:255'],
-                'state' => ['required', 'string', 'max:255'],
-                'country' => ['required', 'string', 'max:255'],
-                'price_per_night' => ['required', 'numeric'],
-                'max_guest' => ['required', 'integer'],
-                'no_bed' => ['required', 'integer'],
-                'no_bath' => ['required', 'integer'],
-                'start_date' => ['required', 'date', 'before:end_date'],
-                'end_date' => ['required', 'date', 'after:start_date'],
-                'images' => ['required', 'array'],
-                'images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:5048'], 
+
+            // Validate the request data
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'address' => 'required|string',
+                'city' => 'required|string',
+                'state' => 'required|string',
+                'country' => 'required|string',
+                'price_per_night' => 'required|numeric',
+                'max_guest' => 'required|integer',
+                'no_bed' => 'required|integer',
+                'no_bath' => 'required|integer',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
-            
-    
-            // Add logged-in user's ID
-            $validatedListing['user_id'] = Auth::user()->id;
-    
-            // Create a listing
-            $listing = Listing::create($validatedListing);
-    
-            // Handle the image uploads
-            if ($request->hasFile('images')) {
+
+            // Create the listing
+            $listing = Listing::create([
+                'user_id' => Auth::id(),
+                'title' => $request->title,
+                'description' => $request->description,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'country' => $request->country,
+                'price_per_night' => $request->price_per_night,
+                'max_guest' => $request->max_guest,
+                'no_bed' => $request->no_bed,
+                'no_bath' => $request->no_bath,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+            ]);
+
+            // Handle images
+            if ($request->hasfile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $imageName = time() . '-' . $image->getClientOriginalName();
-                    $path = $image->storeAs('listings', $imageName, 'public');
-    
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $image->move(public_path('images'), $imageName); // Save the image to the public/images directory
+
+                    // Store image details in the Item_Image model
                     Item_Image::create([
                         'listing_id' => $listing->id,
-                        'image_url' => $path,
+                        'image_path' => 'images/' . $imageName,
                     ]);
                 }
             }
-    
-            return response()->json([
-                'status' => 200,
-                'message' => 'Listing created successfully',
-                'listing' => $listing,
-            ]);
-    
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Listing creation failed',
-                'errors' => $e->getMessage(),
-            ], 500);
-        }
-    }
-    
 
-    // Get all listings
-    public function index()
-    {
-        $listings = Listing::all();
-        return $listings;
+            return response()->json(['message' => 'Listing created successfully!', 'listing' => $listing], 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Error creating listing', 'error' => $e->getMessage()], 500);
+        }
     }
 }

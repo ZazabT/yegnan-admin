@@ -26,7 +26,7 @@ return new class extends Migration
             $table->boolean('confirmed')->default(false);
             $table->date('start_date');
             $table->date('end_date');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('host_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

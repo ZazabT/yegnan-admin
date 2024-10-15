@@ -24,6 +24,7 @@ class Listing extends Model
         'confirmed',
         'start_date',
         'end_date',
+        'host_id', 
     ];
 
     //Relation with Category
@@ -32,10 +33,10 @@ class Listing extends Model
         return $this->belongsToMany(Category::class, 'category_listing');
     }
 
-    //Relation with User
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+    //Relation with host
+    public function host(){
+        
+        return $this->belongsTo(Host::class);
     }
 
     // Relation with images

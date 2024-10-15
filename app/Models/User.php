@@ -56,4 +56,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Listing::class);
     }
+
+    //Relation with Host
+    public function host()
+    {
+        return $this->hasOne(Host::class);
+    }
 }
