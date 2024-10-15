@@ -7,6 +7,7 @@ use App\Models\Item_Image;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ListingController extends Controller
 {
@@ -31,14 +32,14 @@ class ListingController extends Controller
                 'max_guest' => 'required|integer',
                 'no_bed' => 'required|integer',
                 'no_bath' => 'required|integer',
-                'start_date' => 'required|date',
+                'start_date' => 'required|date|after:today',
                 'end_date' => 'required|date|after_or_equal:start_date',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048|nullable',
             ]);
 
             // Create the listing
             $listing = Listing::create([
-                'user_id' => Auth::id(),
+                'host_id' => Auth::user()->host()->first()->id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'address' => $request->address,
@@ -55,15 +56,21 @@ class ListingController extends Controller
 
             // Handle images
             if ($request->hasfile('images')) {
+                 $isMain = true;
                 foreach ($request->file('images') as $image) {
-                    $imageName = time() . '_' . $image->getClientOriginalName();
-                    $image->move(public_path('images'), $imageName); // Save the image to the public/images directory
 
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    // Save the image to the storage/app/public/images directory
+                    $imagePath = $image->storeAs('images', $imageName, 'public');
+                     
                     // Store image details in the Item_Image model
                     Item_Image::create([
                         'listing_id' => $listing->id,
-                        'image_path' => 'images/' . $imageName,
+                        'image_url' => 'storage/' . $imagePath, 
+                        'isMain' => $isMain,
                     ]);
+
+                    $isMain = false;
                 }
             }
 

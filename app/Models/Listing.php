@@ -12,7 +12,7 @@ class Listing extends Model
     //Filable
     protected $fillable = [
         'title',
-        'describtion',
+        'description',
         'address',
         'city',
         'state',

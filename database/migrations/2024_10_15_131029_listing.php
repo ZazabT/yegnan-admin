@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,12 +13,12 @@ return new class extends Migration
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('describtion');
+            $table->string('description'); // Fixed typo
             $table->string('address');
             $table->string('city');
             $table->string('state');
             $table->string('country');
-            $table->float('price_per_night');
+            $table->decimal('price_per_night', 10, 2); // Changed float to decimal
             $table->integer('max_guest');
             $table->integer('no_bed');
             $table->integer('no_bath');
