@@ -44,4 +44,10 @@ class Listing extends Model
     {
         return $this->hasMany(Item_Image::class);
     }
+
+    // Relation with bookings
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

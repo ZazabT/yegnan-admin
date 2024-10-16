@@ -62,4 +62,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Host::class);
     }
+
+    // Relation with Guest
+    public function guest()
+    {
+        return $this->hasOne(Guest::class);
+    }
 }
