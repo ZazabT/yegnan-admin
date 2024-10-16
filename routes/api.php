@@ -26,7 +26,15 @@ Route::get('/categories', [CategoryController::class, 'index']);
 
 
 // Item routes
-Route::middleware('auth:sanctum')->post('listings/add', [ListingController::class, 'store']);
+
+Route::controller(ListingController::class)->group(function () {
+   // add listing
+   Route::post('/listings/create', 'create');
+   // get all listings
+   Route::get('/listings', 'getAllListings');
+   // get listing
+   Route::get('/listings/{id}', 'getListing');
+});
 
 
 

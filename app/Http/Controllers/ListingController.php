@@ -11,8 +11,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ListingController extends Controller
 {
+
+    // middleware
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['getAllListings', 'getListing']);
+    }
+
+
     // Add listing
-    public function store(Request $request)
+    public function create(Request $request)
     {
         try {
             // Ensure the user is authenticated
@@ -78,5 +86,10 @@ class ListingController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => 'Error creating listing', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function getAllListings(){
+        $listings = Listing::with('item_images')->where('confirmed', true)->get();
+        return response()->json($listings);
     }
 }
