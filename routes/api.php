@@ -6,7 +6,8 @@ use App\Http\Controllers\HostController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\CategoryController;
-  use App\Http\Controllers\UserAuthController;    
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\UserAuthController;    
   // get user 
   Route::get('/user', function (Request $request) {     return $request->user(); })->middleware('auth:sanctum');  
   // user authentication routes  
@@ -23,7 +24,8 @@ use App\Http\Controllers\CategoryController;
 // get all categories
 Route::get('/categories', [CategoryController::class, 'index']);
 
-
+// get all Locations
+Route::get('/locations', [LocationController::class, 'index']);
 
 // Item routes
 

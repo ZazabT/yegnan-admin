@@ -65,11 +65,6 @@ class CategorySeeder extends Seeder
                 'description' => 'Stay in luxury safari tents, perfect for a wilderness adventure.'
             ],
             [
-                'name' => 'Villas',
-                'icon' => 'fas fa-villa', // Font Awesome villa icon class (may need a specific class)
-                'description' => 'Luxurious private villas for a truly relaxing stay.'
-            ],
-            [
                 'name' => 'Historic Mansions',
                 'icon' => 'fas fa-monument', // Font Awesome monument icon class
                 'description' => 'Stay in elegant mansions that are steeped in history and culture.'

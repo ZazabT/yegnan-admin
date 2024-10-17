@@ -13,18 +13,17 @@ class Listing extends Model
     protected $fillable = [
         'title',
         'description',
-        'address',
-        'city',
-        'state',
-        'country',
         'price_per_night',
         'max_guest',
-        'no_bed',
-        'no_bath',
-        'confirmed',
+        'bedroom',
+        'bathroom',
+        'bed',
+        'rules',
         'start_date',
         'end_date',
-        'host_id', 
+        'host_id',
+        'category_id',
+        'location_id',
     ];
 
     //Relation with Category
