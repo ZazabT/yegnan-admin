@@ -16,7 +16,10 @@ class DatabaseSeeder extends Seeder
      // call the AdminSeeder
      $this->call(AdminSeeder::class);
 
-     // call the catagorySeedet
+     // call the catagorySeeder
      $this->call(CategorySeeder::class);
+
+     // call the locationSeeder
+     $this->call(LocationSeeder::class);
     }
 }

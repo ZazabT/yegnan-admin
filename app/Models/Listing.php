@@ -28,9 +28,9 @@ class Listing extends Model
     ];
 
     //Relation with Category
-    public function category()
+    public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_listing');
+        return $this->belongsToMany(Category::class, 'categories_listings');
     }
 
     //Relation with host
@@ -50,4 +50,13 @@ class Listing extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+
+    // Relation with Location
+    public function location()
+    {
+        return $this->hasOne(Location::class);
+    }
+
+
 }
