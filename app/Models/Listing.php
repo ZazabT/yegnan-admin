@@ -19,6 +19,7 @@ class Listing extends Model
         'bathrooms',
         'beds',
         'rules',
+        'confirmed',
         'start_date',
         'end_date',
         'host_id',
@@ -54,8 +55,15 @@ class Listing extends Model
     // Relation with Location
     public function location()
     {
-        return $this->hasOne(Location::class);
+        return $this->belongsTo(Location::class);
     }
 
+
+
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
 
 }

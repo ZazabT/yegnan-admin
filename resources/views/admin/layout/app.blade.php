@@ -61,7 +61,7 @@
                             Dashboard
                         </a>
                         <div class="sb-sidenav-menu-heading">Management</div>
-                        <a class="nav-link" href="{{ url('/users') }}">
+                        <a class="nav-link" href="{{route('listings.index')}}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Users
                         </a>

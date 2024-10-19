@@ -42,6 +42,7 @@ class ListingController extends Controller
                 'bathrooms' => 'required|integer', 
                 'beds' => 'required|integer',
                 'rules' => 'required|string',
+                'confirmed' => 'required|boolean',
                 'start_date' => 'required|date|after:today',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'location_id' => 'required|integer',

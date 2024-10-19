@@ -22,6 +22,6 @@ class Location extends Model
     // Relation with Listing 
     public function listings()
     {
-        return $this->hasMany(Listing::class);
+        return $this->belongsToMany(Listing::class);
     }
 }

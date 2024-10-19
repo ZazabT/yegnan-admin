@@ -1,9 +1,14 @@
 <?php
 
 use App\Models\User;
+use Termwind\Components\Li;
+
+
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ListingController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -31,6 +36,22 @@ use App\Http\Controllers\Admin\AdminController;
                          // delete user
                          Route::delete('users/{user}' , 'destroy')->name('users.destroy');
                                
+             });
+
+             // listing controller
+             Route::controller(ListingController::class)->group(function () {
+                 // get all listing
+                 Route::get('listings', 'index')->name('listings.index');
+
+                 // delete listing
+                 Route::delete('listings/{listing}' , 'destroy')->name('listings.destroy');
+
+                 // edit listing
+                 Route::get('listings/{listing}/edit' , 'edit')->name('listings.edit');
+
+                 // update listing
+                 Route::put('listings/{listing}' , 'update')->name('listings.update');
+
              });
          });
          
