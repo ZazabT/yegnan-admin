@@ -31,7 +31,7 @@ Route::get('/locations', [LocationController::class, 'index']);
 
 Route::controller(ListingController::class)->group(function () {
    // add listing
-   Route::post('/listings/create', 'create');
+   Route::post('/listings/create', 'create')->middleware('auth:sanctum');
    // get all listings
    Route::get('/listings', 'getAllListings');
    // get listing
