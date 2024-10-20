@@ -42,11 +42,10 @@ class ListingController extends Controller
                 'bathrooms' => 'required|integer', 
                 'beds' => 'required|integer',
                 'rules' => 'required|string',
-                'confirmed' => 'required|boolean',
                 'start_date' => 'required|date|after:today',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'location_id' => 'required|integer',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048|nullable',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:5048|nullable',
                 'categories' => 'array|nullable',
                 'categories.*' => 'integer|exists:categories,id',
             ]);
