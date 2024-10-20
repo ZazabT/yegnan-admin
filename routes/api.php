@@ -27,7 +27,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 // get all Locations
 Route::get('/locations', [LocationController::class, 'index']);
 
-// Item routes
+// List routes
 
 Route::controller(ListingController::class)->group(function () {
    // add listing
@@ -35,7 +35,7 @@ Route::controller(ListingController::class)->group(function () {
    // get all listings
    Route::get('/listings', 'getAllListings');
    // get listing
-   Route::get('/listings/{id}', 'getListing');
+   Route::get('/listing/{id}', 'getListing');
 });
 
 

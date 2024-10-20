@@ -113,19 +113,44 @@ class ListingController extends Controller
     }
     
 
-
+    // get all listing 
     public function getAllListings(){
         // Try to get all listings 
         try {
             // Fetch listings with related item_images where confirmed is 1
-            $listing = Listing::with('item_images')->where('confirmed', 1)->get();
+            $listing = Listing::with(['item_images' , 'categories' , 'location' , 'host.user'])->where('confirmed', 1)->get();
             
             // Return the listings as a JSON response
-            return response()->json($listing);
+            return response()->json([
+                'status' => 200,
+                'listings' => $listing],200);
         } catch (\Throwable $th) {
 
             // Return an error response
-            return response()->json(['error' => 'Failed to retrieve listings'], 500);
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve listings',
+                'error' => 'Failed to retrieve listings'], 500);
+        }
+    }
+
+    // get listing by id
+    public function getListing($id){
+         try {
+            // Fetch listings with related item_images , host  location ...
+            $listing = Listing::with(['item_images' , 'categories' , 'location' , 'host.user'])->find($id);
+
+            // Return the listings as a JSON response
+            return response()->json([
+                'status' => 200,
+                'message' => 'Listing retrieved successfully!',
+                'listing' => $listing],200);
+         } catch (\Throwable $th) {
+            // Return an error response
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve listings',
+                'error' => 'Failed to retrieve listings ' . $th->getMessage() ], 500);
         }
     }
     
