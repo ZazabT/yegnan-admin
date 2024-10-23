@@ -12,8 +12,21 @@ class Host extends Model
 
     // FILLABLE
     protected $fillable = [
-     'host_describtion',
-     'profile_picture',
+     'username',
+     'hostDescription',
+     'country',
+     'region',
+     'city',
+     'phone_number',
+     'facebook',
+     'instagram',
+     'tiktoke',
+     'telegram',
+     'frontIdImage',
+     'backIdImage',
+     'isVerified',
+     'profilePicture',
+     'rating',
      'user_id'
     ];
 

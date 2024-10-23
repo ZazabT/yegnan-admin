@@ -45,7 +45,7 @@ class ListingController extends Controller
                 'start_date' => 'required|date|after:today',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'location_id' => 'required|integer',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:5048|nullable',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10024|nullable',
                 'categories' => 'array|nullable',
                 'categories.*' => 'integer|exists:categories,id',
             ]);
@@ -137,7 +137,7 @@ class ListingController extends Controller
     public function getListing($id){
          try {
             // Fetch listings with related item_images , host  location ...
-            $listing = Listing::with(['item_images' , 'categories' , 'location' , 'host.user'])->find($id);
+            $listing = Listing::with(['item_images' , 'categories' , 'location' , 'host.user' , 'bookings'])->find($id);
 
             // Return the listings as a JSON response
             return response()->json([

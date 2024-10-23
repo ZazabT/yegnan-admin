@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route; 
 use App\Http\Controllers\HostController;
@@ -43,4 +44,16 @@ Route::controller(ListingController::class)->group(function () {
 
 // Host routes
 Route::middleware('auth:sanctum')->post('/host/create', [HostController::class, 'createHost']);
+Route::middleware('auth:sanctum')->get('/host/profile/{id}', [HostController::class, 'getHost']);
+Route::middleware('auth:sanctum')->get('/host/profile/update{id}', [HostController::class, 'updateHostProfile']);
 
+
+
+// Booking routes 
+
+// reserve listing
+Route::middleware('auth:sanctum')->post('/booking/reserve', [BookingController::class, 'reserve']);
+// get Bookings for all listing of the spesific host  
+Route::middleware('auth:sanctum')->get('/bookings/host/{id}', [BookingController::class, 'getHostBookings']);
+// get all booking of the specific guest 
+Route::middleware('auth:sanctum')->get('/bookings/guest/{id}', [BookingController::class, 'getGuestBookings']);

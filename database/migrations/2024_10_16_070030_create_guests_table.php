@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('profile_picture')->nullable();
-            $table->string('bio')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('username')->nullable();
+            $table->decimal('rating', 3, 2)->nullable();
+            $table-> integer('totalBookings')->default(0)->nullable();
+            $table->string('profilePicture')->nullable();
+            $table->decimal('totalSpent', 10, 2)->default(0); 
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('region')->nullable();
+            $table->string('phoneNumber')->nullable();
             $table->timestamps();
         });
     }

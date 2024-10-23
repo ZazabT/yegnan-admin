@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guest;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -47,6 +48,11 @@ class UserAuthController extends Controller
     
             // Create token for the new user
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            // and also create a separet guest table for the user
+            $guest = Guest::create([
+                'user_id' => $user->id
+            ]);
     
             return response()->json([
                 'status' => 201,

@@ -13,8 +13,8 @@ class Booking extends Model
     protected $fillable = [
         'listing_id',
         'guest_id',
-        'check_in',
-        'check_out',
+        'checkin_date',
+        'checkout_date',
         'total_price',
         'status',
     ];
@@ -30,4 +30,6 @@ class Booking extends Model
     {
         return $this->belongsTo(Listing::class, 'listing_id');
     }
+
+    
 }
