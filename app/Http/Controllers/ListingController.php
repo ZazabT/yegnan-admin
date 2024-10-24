@@ -74,10 +74,11 @@ class ListingController extends Controller
             // Handle images
             if ($request->hasfile('images')) {
                 $isMain = true;
+                $listingName = $listing->title . ' - ';
                 foreach ($request->file('images') as $image) {
-                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $imageName =$listingName . time() . '_' . $image->getClientOriginalName();
                     // Save the image to the storage/app/public/images directory
-                    $imagePath = $image->storeAs('images', $imageName, 'public');
+                    $imagePath = $image->storeAs('liisting_images', $imageName, 'public');
                     
                     // Store image details in the Item_Image model
                     Item_Image::create([

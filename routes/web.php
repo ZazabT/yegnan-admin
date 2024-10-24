@@ -6,6 +6,7 @@ use Termwind\Components\Li;
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\HostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ListingController;
@@ -52,6 +53,12 @@ use App\Http\Controllers\Admin\ListingController;
                  // update listing
                  Route::put('listings/{listing}' , 'update')->name('listings.update');
 
+             });
+
+             // Host controller
+             Route::controller(HostController::class)->group(function () {
+                 // get all hosts
+                 Route::get('hosts' , 'index')->name('hosts');
              });
          });
          

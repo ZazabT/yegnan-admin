@@ -1,139 +1,98 @@
 @extends('admin.layout.app')
 
+@section('title', 'Users')
 @section('content')
-<style>
-    /* Remove vertical lines and make the table look minimal */
-    .table-borderless th, .table-borderless td {
-        border: none;
-    }
-
-    /* Make header font bigger and bold */
-    table thead th, table tfoot th {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333; /* Use a darker gray */
-    }
-
-    /* Table data cell styling */
-    table tbody td {
-        font-size: 1rem;
-        padding: 15px;
-        color: #555;
-    }
-
-    /* Adjusting search input */
-    #searchInput {
-        margin-bottom: 20px;
-        padding: 10px;
-        border-radius: 8px;
-    }
-
-    /* Adding some space between rows */
-    table tbody tr {
-        border-bottom: 1px solid #eaeaea;
-    }
-
-    /* Hover effect on table rows */
-    table tbody tr:hover {
-        background-color: #f9f9f9;
-    }
-
-    /* Remove the background from the card header */
-    .card-header {
-        background-color: transparent;
-        font-size: 1.4rem;
-        color: #333; /* Dark color for text */
-    }
-
-    /* Ensure pagination looks consistent with the design */
-    .pagination {
-        justify-content: center;
-    }
-</style>
 <main>
-    <div class="container-fluid px-4">
+    @if ($users->isEmpty())
+        <div class="card-body">
+            <h1 class="mt-4">Users Table</h1>
+            <p class="ml-2">No users found.</p>
+        </div>
+    @else
+    <div class="card-body">
         <h1 class="mt-4">Users Table</h1>
 
-        <div class="mb-3">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search Users...">
-        </div>
+        <!-- Search Input -->
+        <input type="search" class="form-control" placeholder="Search..." aria-controls="productsTable">
 
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="datatablesSimple" class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Is Host</th>
-                                <th>Age</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Is Host</th>
-                                <th>Age</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $user->firstName }}</td>
-                                    <td>{{ $user->lastName }}</td>
-                                    <td>{{ $user->isHomeOwner ? 'Yes' : 'No' }}</td>
-                                    <td>{{ $user->age }}</td>
-                                    <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td>
-                                    <td>
-                                        <a href="#" class="text-primary" data-toggle="tooltip" title="Edit User"><i class="fas fa-edit"></i></a>
+        <!-- Users Table -->
+        <table id="productsTable" class="table table-hover table-product" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Is Host</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($users as $user)
+                <tr>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->firstName }}</td>
+                    <td>{{ $user->lastName }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->age }}</td>
+                    <td>{{ $user->isHomeOwner ? 'Yes' : 'No' }}</td>
+                    <td class="text-center">
+                        <a href="#">
+                          <i class="mdi mdi-open-in-new"></i>
+                        </a>
+                        <a href="#">
+                          <i class="mdi mdi-close text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-                                        <a href="#" 
-                                           class="text-danger" 
-                                           data-toggle="tooltip" 
-                                           title="Delete User"
-                                           onclick="event.preventDefault(); document.getElementById('delete-form-{{ $user->id }}').submit();"><i class='fas fa-trash'></i></a>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example" class="mt-4">
+            <ul class="pagination justify-content-end pagination-seperated pagination-seperated-rounded">
+                @if ($users->onFirstPage())
+                    <li class="page-item disabled">
+                        <span class="page-link">Prev</span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $users->previousPageUrl() }}" aria-label="Previous">
+                            <span aria-hidden="true" class="mdi mdi-chevron-left mr-1"></span> Prev
+                        </a>
+                    </li>
+                @endif
 
-                                        <form id='delete-form-{{ $user->id }}' action="{{ route('users.destroy', $user->id) }}" method='POST' style='display:none;'>
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                @for ($i = 1; $i <= $users->lastPage(); $i++)
+                    <li class="page-item {{ ($users->currentPage() == $i) ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $users->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
 
-                    <!-- Pagination Controls -->
-                    {{ $users->onEachSide(1)->links() }}
-                </div>
-
-            </div>
-        </div>
-
+                @if ($users->hasMorePages())
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $users->nextPageUrl() }}" aria-label="Next">
+                            Next
+                            <span aria-hidden="true" class="mdi mdi-chevron-right ml-1"></span>
+                        </a>
+                    </li>
+                @else
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                @endif
+            </ul>
+        </nav>
     </div>
+    @endif
 </main>
+
 
 @section('scripts')
 <script src='https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js'></script>
-
-<script>
-// Search functionality for users
-$(document).ready(function() {
-    $('#searchInput').on('keyup', function() {
-        var value = $(this).val().toLowerCase();
-        $('#datatablesSimple tbody tr').filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
-    });
-});
-</script>
-
+<script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @endsection
