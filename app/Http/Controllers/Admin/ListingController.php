@@ -11,7 +11,7 @@ class ListingController extends Controller
      // get all listings
      public function index()
      {
-        $listings = Listing::with(['location', 'host.user'])->paginate(8);
+        $listings = Listing::with(['item_images' , 'categories' , 'location' , 'host.user'])->paginate(8);
          return view('admin.listings.index', compact('listings'));
      }
 
@@ -27,5 +27,13 @@ class ListingController extends Controller
      {
          $listing->update($request->all());
          return redirect()->route('listings.index')->with('success', 'Listing updated successfully.');
+     }
+
+     // confirm a listing
+     public function confirm(Request $request , Listing $listing){
+        $listing->confirmed = !$listing->confirmed;
+        $listing->save();
+        return redirect()->route('listings') 
+            ->with('success', $listing->confirmed ? 'Listing confirmed successfully.' : 'Listing unconfirmed successfully.');
      }
 }

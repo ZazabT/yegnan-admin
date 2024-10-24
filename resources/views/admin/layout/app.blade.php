@@ -122,9 +122,9 @@
                 
                   <li
                    >
-                    <a class="sidenav-item-link" href="chat.html">
-                      <i class="mdi mdi-wechat"></i>
-                      <span class="nav-text">Chat</span>
+                    <a class="sidenav-item-link" href="{{route('listings')}}">
+                      <i class="mdi mdi-home"></i>
+                      <span class="nav-text">Listings</span>
                     </a>
                   </li>
                 

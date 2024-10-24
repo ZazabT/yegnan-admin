@@ -29,7 +29,6 @@
                             </a>
         
                             <ul class="list-unstyled d-inline-block mb-5">
-                                
                                 <li class="d-flex mb-1">
                                     <i class="mdi mdi-phone mr-1"></i>
                                     <span>
@@ -50,7 +49,7 @@
                                     @if($host->facebook)
                                     <div class="col-auto">
                                         <a href="https://www.facebook.com/{{ $host->facebook }}" target="_blank">
-                                            <i class="myIconF mdi mdi-facebook-box "></i>
+                                            <i class="myIconF mdi mdi-facebook-box"></i>
                                         </a>
                                     </div>
                                     @endif
@@ -59,7 +58,7 @@
                                     @if($host->instagram)
                                     <div class="col-auto">
                                         <a href="https://www.instagram.com/{{ $host->instagram }}" target="_blank">
-                                            <i class="myIconI mdi mdi-instagram "></i>
+                                            <i class="myIconI mdi mdi-instagram"></i>
                                         </a>
                                     </div>
                                     @endif
@@ -68,18 +67,19 @@
                                     @if($host->telegram)
                                     <div class="col-auto">
                                         <a href="https://www.telegram.com/{{ $host->telegram }}" target="_blank">
-                                            <i class="myIconT mdi mdi-telegram "></i> 
+                                            <i class="myIconT mdi mdi-telegram"></i> 
+                                        </a>
                                     </div>
                                     @endif
 
                                     {{-- tiktok --}}
-                                    @if($host->telegram)
+                                    @if($host->tiktok)
                                     <div class="col-auto">
                                         <a href="https://www.tiktok.com/{{ $host->tiktok }}" target="_blank">
-                                           <img src="{{asset('images/tik-tok.png')}}" alt="tiktok" class="mt-2">
+                                           <img src="{{ asset('images/tik-tok.png') }}" alt="tiktok" class="mt-2">
+                                        </a>
                                     </div>
                                     @endif
-                                   
                                 </div>
                             @endif
                         
@@ -98,7 +98,6 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <!-- You can put any host-specific details here -->
                                 <div class="row">
                                     <div class="col-md-4">
                                         <img class="rounded-circle" src="{{ $host->profilePicture ? asset($host->profilePicture) : 'https://ui-avatars.com/api/?name=' . ucfirst($host->username[0]) }}" alt="Profile Image" style="width: 150px; height: 150px;">
@@ -107,7 +106,6 @@
                                         <h4>{{ $host->username }}</h4>
                                         <p>Email: {{ $host->user->email }}</p>
                                         <p>Phone: {{ $host->phone_number }}</p>
-                                        <!-- More host-specific details -->
                                     </div>
                                 </div>
                             </div>
@@ -122,11 +120,11 @@
     </div>
     @endif
 </main>
-<style>
 
-.name{ 
+<style>
+.name { 
     font-size: 1.5rem;
-    }
+}
 .myIconI,
 .myIconF,
 .myIconT,
@@ -134,19 +132,15 @@
     font-size: 30px;
     transition: color 0.3s ease, transform 0.3s ease; 
 }
-
 .myIconI {
     color: #fe5eb9;
 }
-
 .myIconF {
     color: #4867aa;
 }
-
 .myIconT {
     color: #26a4e4;
 }
-
 .myIcont {
     color: black;
 }
@@ -154,22 +148,24 @@
 /* Hovers */
 .myIconI:hover {
     color: #bd478a;
-    
 }
-
 .myIconF:hover {
     color: #374e82;
-  
 }
-
 .myIconT:hover {
     color: #2180b0;
-  
 }
-
 .myIcont:hover {
     color: rgb(82, 81, 81);
-  
 }
 </style>
+
+{{-- <script>
+$(document).ready(function() {
+    $('.modal').on('click', function(event) {
+        event.stopPropagation();
+    });
+});
+</script> --}}
+
 @endsection

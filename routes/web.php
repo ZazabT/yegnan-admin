@@ -42,7 +42,10 @@ use App\Http\Controllers\Admin\ListingController;
              // listing controller
              Route::controller(ListingController::class)->group(function () {
                  // get all listing
-                 Route::get('listings', 'index')->name('listings.index');
+                 Route::get('listings', 'index')->name('listings');
+
+                 // confirm a list 
+                 Route::put('listings/{listing}/confirm', 'confirm')->name('confirm');
 
                  // delete listing
                  Route::delete('listings/{listing}' , 'destroy')->name('listings.destroy');
