@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 
 <!--
@@ -24,6 +25,7 @@
 
 
   <link href="{{asset('plugins/nprogress/nprogress.css')}}" rel="stylesheet" />
+  <link href=" {{asset('plugins/toaster/toastr.min.css')}}"rel="stylesheet" />
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link href="{{asset('plugins/prism/prism.css')}}" rel="stylesheet" />
@@ -51,6 +53,20 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <script src="{{asset('plugins/nprogress/nprogress.js')}}"></script>
+{{-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Admin Dashboard for Yegnan">
+    <meta name="author" content="Yegnan Admin">
+    <title>Admin Dashboard - Yegnan</title>
+    <link href="{{}}"
+    <link rel="icon" href="1728999055_yegnaLogo-removebg.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+>>>>>>> f2400bd63e12f5bea6d53f1481aa64535dfd4d47
 </head>
 
 
@@ -61,6 +77,63 @@
     </script>
 
     
+=======
+</body>
+</html> --}}
+
+
+
+
+<!DOCTYPE html>
+
+<!--
+ // WEBSITE: https://themefisher.com
+ // TWITTER: https://twitter.com/themefisher
+ // FACEBOOK: https://www.facebook.com/themefisher
+ // GITHUB: https://github.com/themefisher/
+-->
+
+<html lang="en" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>@yield('title') | Yegnan Admin</title>
+
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
+  <link href="{{asset('plugins/material/css/materialdesignicons.min.css')}}" rel="stylesheet" />
+  <link href="{{asset('plugins/simplebar/simplebar.css')}}" rel="stylesheet" />
+
+  <link href="{{asset('plugins/nprogress/nprogress.css')}}" rel="stylesheet" />
+  
+  
+  <link href="{{asset('plugins/prism/prism.css')}}" rel="stylesheet" />
+  
+  
+  <!-- MONO CSS -->
+  <link id="main-css-href" rel="stylesheet" href="{{asset('css/style.css')}}" />
+
+  
+
+
+  <!-- FAVICON -->
+  <link href="{{asset('images/favicon.png')}}" rel="shortcut icon" />
+
+  <!--
+    HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+  -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <script src="{{asset('plugins/nprogress/nprogress.js')}}"></script>
+</head>
+
+
+  <body class="navbar-fixed sidebar-fixed" id="body">
 
     <!-- ====================================
     ——— WRAPPER
@@ -76,8 +149,10 @@
             <!-- Aplication Brand -->
             <div class="app-brand">
               <a href="/index.html">
+
                 <img src="{{asset('images/sleek-icon.png')}} "alt="Mono">
-                <span class="brand-name font-weight-bold ">Yegnan</span>
+                <span class="brand-name font-weight-bold">Yegnan</span>
+
               </a>
             </div>
             <!-- begin sidebar scrollbar -->
@@ -122,23 +197,29 @@
                 
                   <li
                    >
+
                     <a class="sidenav-item-link" href="{{route('listings')}}">
                       <i class="mdi mdi-home"></i>
                       <span class="nav-text">Listings</span>
+
+                      <a class="sidenav-item-link" href="{{route('bookings')}}">
+                        <i class="mdi mdi-calendar-check"></i>
+                        <span class="nav-text">Bookings</span>
                     </a>
+                    
                   </li>
                 
 
                 
 
                 
-                  <li
-                   >
-                    <a class="sidenav-item-link" href="contacts.html">
-                      <i class="mdi mdi-phone"></i>
-                      <span class="nav-text">Contacts</span>
+                  <li>
+                    <a class="sidenav-item-link" href="{{route('categories')}}">
+                      <i class="mdi mdi-tag-multiple"></i>
+                        <span class="nav-text">Categories</span>
                     </a>
-                  </li>
+                </li>
+                
                 
 
                 
@@ -147,8 +228,8 @@
                   <li
                    >
                     <a class="sidenav-item-link" href="team.html">
-                      <i class="mdi mdi-account-group"></i>
-                      <span class="nav-text">Team</span>
+                      <i class="mdi mdi-map-marker"></i>
+                      <span class="nav-text">Locations</span>
                     </a>
                   </li>
                 
@@ -159,11 +240,19 @@
                   <li
                    >
                     <a class="sidenav-item-link" href="calendar.html">
-                      <i class="mdi mdi-calendar-check"></i>
-                      <span class="nav-text">Calendar</span>
+                      <i class="mdi mdi-star"></i>
+                      <span class="nav-text">Reviews</span>
                     </a>
                   </li>
                 
+
+                  <li
+                  >
+                   <a class="sidenav-item-link" href="calendar.html">
+                    <i class="mdi mdi-credit-card"></i>
+                     <span class="nav-text">Payments</span>
+                   </a>
+                 </li>
 
                 
 
@@ -223,14 +312,14 @@
 
                 
                   <li class="section-title">
-                    UI Elements
+                    Account Management
                   </li>
                 
 
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#ui-elements"
                       aria-expanded="false" aria-controls="ui-elements">
                       <i class="mdi mdi-folder-outline"></i>
@@ -596,13 +685,13 @@
                         
                       </div>
                     </ul>
-                  </li>
+                  </li> --}}
                 
 
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#charts"
                       aria-expanded="false" aria-controls="charts">
                       <i class="mdi mdi-chart-pie"></i>
@@ -626,15 +715,15 @@
                         
                       </div>
                     </ul>
-                  </li>
+                  </li> --}}
                 
 
                 
 
                 
-                  <li class="section-title">
+                  {{-- <li class="section-title">
                     Pages
-                  </li>
+                  </li> --}}
                 
 
                 
@@ -796,7 +885,7 @@
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#other-page"
                       aria-expanded="false" aria-controls="other-page">
                       <i class="mdi mdi-file-multiple"></i>
@@ -856,7 +945,7 @@
                         
                       </div>
                     </ul>
-                  </li>
+                  </li> --}}
                 
 
                 
@@ -870,20 +959,20 @@
                 
 
                 
-                  <li
+                  {{-- <li
                    class="active"
                    >
                     <a class="sidenav-item-link" href="getting-started.html">
                       <i class="mdi mdi-airplane"></i>
                       <span class="nav-text">Getting Started</span>
                     </a>
-                  </li>
+                  </li> --}}
                 
 
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#customization"
                       aria-expanded="false" aria-controls="customization">
                       <i class="mdi mdi-square-edit-outline"></i>
@@ -932,7 +1021,7 @@
                       </div>
                     </ul>
                   </li>
-                
+                 --}}
 
                 
               </ul>
@@ -1039,7 +1128,9 @@
                               </div>
                               <div class="media-body">
                                 <a href="user-profile.html">
-                                  <span class="title mb-0">John Doe</span>
+                                  <span class="title mb-0">
+                                    {{ Auth::guard('admin')->user()->name }}
+                                </span>
                                   <span class="discribe">Extremity sweetness difficult behaviour he of. On disposal of as landlord horrible. Afraid at highly months do things on at.</span>
                                   <span class="time">
                                     <time>Just now</time>...
@@ -1267,7 +1358,9 @@
                   <li class="dropdown user-menu">
                     <button class="dropdown-toggle nav-link" data-toggle="dropdown">
                       <img src="{{asset('images/user/user-xs-01.jpg')}}" class="user-image rounded-circle" alt="User Image" />
-                      <span class="d-none d-lg-inline-block">John Doe</span>
+                      <span class="d-none d-lg-inline-block">
+                        {{Auth::guard('admin')->user()->name}}
+                      </span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
                       <li>
@@ -1445,16 +1538,16 @@
                     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
                     <script src="{{asset('plugins/simplebar/simplebar.min.js')}}"></script>
                     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
-
+                    <script src="{{asset('plugins/toaster/toastr.min.js')}}"></script>
                     
                     
                     <script src="{{asset('plugins/prism/prism.js')}}"></script>
                     
                     
-                    <script src="js/mono.js"></script>
-                    <script src="js/chart.js"></script>
-                    <script src="js/map.js"></script>
-                    <script src="js/custom.js"></script>
+                    <script src="{{asset('js/mono.js')}}"></script>
+                    <script src=" {{asset('js/chart.js')}}"></script>
+                    <script src="{{asset('js/map.js')}}"></script>
+                    <script src="{{asset('js/custom.js')}}"></script>
 
                     
 

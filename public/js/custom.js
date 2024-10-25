@@ -318,7 +318,7 @@ $(document).ready(function () {
       showMethod: "fadeIn",
       hideMethod: "fadeOut",
     };
-    toastr.success("Welcome to Mono Dashboard", "Howdy!");
+    toastr.success("Welcome to Yegnan Dashboard", "Hola!");
   }
 
   if (toaster.length != 0) {
@@ -367,40 +367,32 @@ $(document).ready(function () {
 
   /*======== 13. PROGRESS BAR ========*/
   NProgress.done();
+  // did this work
 
   /*======== 14. DATA TABLE ========*/
-  $(document).ready(function() {
-    var productsTable = $("#productsTable");
-
-    if (productsTable.length != 0) {
-        var table = productsTable.DataTable({
-            info: false,
-            lengthChange: false,
-            lengthMenu: [
-                [5, 10, 15, -1],
-                [5, 10, 15, "All"],
-            ],
-            scrollX: true,
-            order: [[2, "asc"]],
-            columnDefs: [
-                {
-                    orderable: false,
-                    targets: [0, 6],  // This disables sorting on columns 0 and 6
-                },
-            ],
-            language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search...",
-            },
-        });
-
-        // External search box event listener
-        $('input[type="search"]').on('keyup', function() {
-            table.search(this.value).draw();  // Trigger search on keyup
-        });
-    }
-});
-
+  var productsTable = $("#productsTable");
+  if (productsTable.length != 0) {
+    productsTable.DataTable({
+      info: false,
+      lengthChange: false,
+      lengthMenu: [
+        [5, 10, 15, -1],
+        [5, 10, 15, "All"],
+      ],
+      scrollX: true,
+      order: [[2, "asc"]],
+      columnDefs: [
+        {
+          orderable: false,
+          targets: [, 0, 6, -1],
+        },
+      ],
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search...",
+      },
+    });
+  }
 
   var productSale = $("#product-sale");
   if (productSale.length != 0) {

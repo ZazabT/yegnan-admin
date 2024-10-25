@@ -26,14 +26,26 @@ class ListingController extends Controller
      public function update(Request $request, Listing $listing)
      {
          $listing->update($request->all());
-         return redirect()->route('listings.index')->with('success', 'Listing updated successfully.');
+         session()->flash('toaster-success', 'Listing updated successfully.');
+         return redirect()->route('listings.index');
      }
-
-     // confirm a listing
-     public function confirm(Request $request , Listing $listing){
-        $listing->confirmed = !$listing->confirmed;
-        $listing->save();
-        return redirect()->route('listings') 
-            ->with('success', $listing->confirmed ? 'Listing confirmed successfully.' : 'Listing unconfirmed successfully.');
+     
+     public function confirm(Request $request, Listing $listing)
+     {
+         $listing->confirmed = !$listing->confirmed;
+         $listing->save();
+         session()->flash(
+             'toaster-success',
+             $listing->confirmed ? 'Listing confirmed successfully.' : 'Listing unconfirmed successfully.'
+         );
+         return redirect()->route('listings');
      }
+     
+     public function destroy(Listing $listing)
+     {
+         $listing->delete();
+         session()->flash('toaster-success', $listing->title . ' deleted successfully.');
+         return redirect()->route('listings');
+     }
+     
 }

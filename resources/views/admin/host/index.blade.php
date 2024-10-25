@@ -7,33 +7,26 @@
 <main>
     @if ($hosts->isEmpty())
         <div class="card-body">
-            <h1 class="mt-4">Hosts Table</h1>
-            <p class="ml-2">No hosts found.</p>
+            <h1 class="mt-4">Host Table</h1>
+            <p class="ml-2">No Host found.</p>
         </div>
     @else
-    <div class="content-wrapper p-4">
+    <div class="content-wrapper">
         <div class="row">
             @foreach ($hosts as $host)
-                <div class="col-lg-6 col-xl-4 col-xxl-3 mb-4 myHostcard"> 
+                <div class="col-lg-6 col-xl-4 col-xxl-3 mx-4"> 
                     <div class="card card-default mt-7">
-                        <div class="card-body text-center">
+                        <div class="card-body text-center ">
                             <a class="d-block mb-2" href="javascript:void(0)" data-toggle="modal" data-target="#modal-host-{{ $host->id }}">
                                 <div class="image mb-3 d-inline-flex mt-n8">
-                                    <img src="{{ $host->profilePicture ? asset($host->profilePicture) : 'https://ui-avatars.com/api/?name=' . ucfirst($host->username[0]) }}" 
-                                    class="img-fluid rounded-circle d-inline-block" 
-                                    style="width: 110px; height: 110px;" 
-                                    alt="Avatar Image">
+                                    <img src="{{ $host->profilePicture ? asset( $host->profilePicture) : 'https://ui-avatars.com/api/?name=' . ucfirst($host->username[0]) }}" class="img-fluid rounded-circle profile-image" alt="Avatar Image">
                                 </div>
-                                
-                                <h5 class="card-title text-secondary font-weight-bold name">{{ $host->username }}</h5>
+                                <h5 class="card-title name">{{ $host->username }}</h5>
                             </a>
-        
                             <ul class="list-unstyled d-inline-block mb-5">
                                 <li class="d-flex mb-1">
                                     <i class="mdi mdi-phone mr-1"></i>
-                                    <span>
-                                        {{ $host->phone_number ? preg_replace('/(\d{3})(\d{3})(\d{4})/', '$1-$2-$3', $host->phone_number) : 'N/A' }}
-                                    </span>
+                                    <span>{{ $host->phone_number ? preg_replace('/(\d{3})(\d{3})(\d{4})/', '$1-$2-$3', $host->phone_number) : 'N/A' }}</span>
                                 </li>
                                 <li class="d-flex">
                                     <i class="mdi mdi-email mr-1"></i>
@@ -43,9 +36,7 @@
 
                             <!-- Display Social Media Icons -->
                             @if($host->facebook || $host->instagram || $host->telegram || $host->tiktok)
-                                <div class="row justify-content-center mb-2 mt-2">
-                                    
-                                    {{-- facebook --}}
+                                <div class="row justify-content-center mt-1">
                                     @if($host->facebook)
                                     <div class="col-auto">
                                         <a href="https://www.facebook.com/{{ $host->facebook }}" target="_blank">
@@ -53,8 +44,6 @@
                                         </a>
                                     </div>
                                     @endif
-
-                                    {{-- instagram --}}
                                     @if($host->instagram)
                                     <div class="col-auto">
                                         <a href="https://www.instagram.com/{{ $host->instagram }}" target="_blank">
@@ -62,8 +51,6 @@
                                         </a>
                                     </div>
                                     @endif
-
-                                    {{-- telegram --}}
                                     @if($host->telegram)
                                     <div class="col-auto">
                                         <a href="https://www.telegram.com/{{ $host->telegram }}" target="_blank">
@@ -71,22 +58,19 @@
                                         </a>
                                     </div>
                                     @endif
-
-                                    {{-- tiktok --}}
                                     @if($host->tiktok)
-                                    <div class="col-auto">
+                                    <div class="col-auto mt-2">
                                         <a href="https://www.tiktok.com/{{ $host->tiktok }}" target="_blank">
-                                           <img src="{{ asset('images/tik-tok.png') }}" alt="tiktok" class="mt-2">
+                                           <img src="{{ asset('images/tik-tok.png') }}" alt="tiktok" class="tiktok-icon">
                                         </a>
                                     </div>
                                     @endif
                                 </div>
                             @endif
-                        
                         </div>
                     </div>
                 </div>
-
+            
                 <!-- Modal for Each Host -->
                 <div class="modal fade" id="modal-host-{{ $host->id }}" tabindex="-1" role="dialog" aria-labelledby="hostModalLabel{{ $host->id }}" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -100,12 +84,12 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img class="rounded-circle" src="{{ $host->profilePicture ? asset($host->profilePicture) : 'https://ui-avatars.com/api/?name=' . ucfirst($host->username[0]) }}" alt="Profile Image" style="width: 150px; height: 150px;">
+                                        <img class="rounded-circle profile-image-modal" src="{{ $host->profilePicture ? asset( $host->profilePicture) : 'https://ui-avatars.com/api/?name=' . ucfirst($host->username[0]) }}" alt="Profile Image">
                                     </div>
                                     <div class="col-md-8">
                                         <h4>{{ $host->username }}</h4>
                                         <p>Email: {{ $host->user->email }}</p>
-                                        <p>Phone: {{ $host->phone_number }}</p>
+                                        <p>Phone: {{ $host->phone_number ? preg_replace('/(\d{3})(\d{3})(\d{4})/', '$1-$2-$3', $host->phone_number) : 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -114,16 +98,30 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- End of Modal -->
             @endforeach
-        </div>
-    </div>
+        </div> <!-- End of row -->
+    </div> <!-- End of content-wrapper -->
     @endif
 </main>
 
 <style>
+/* Fixed Image Sizes */
+.profile-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+.profile-image-modal {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
 .name { 
     font-size: 1.5rem;
+    font-weight: bold;
+    color:#9e6de0;
 }
 .myIconI,
 .myIconF,
@@ -158,14 +156,12 @@
 .myIcont:hover {
     color: rgb(82, 81, 81);
 }
-</style>
 
-{{-- <script>
-$(document).ready(function() {
-    $('.modal').on('click', function(event) {
-        event.stopPropagation();
-    });
-});
-</script> --}}
+/* Social Media Icon Size */
+.tiktok-icon{
+    max-width: 25px;
+    max-height: 25px;
+}
+</style>
 
 @endsection

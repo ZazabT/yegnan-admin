@@ -13573,6 +13573,9 @@ label {
   flex-grow: 1;
   align-items: center;
 }
+.sidebar .sidenav-item-link:hover{
+  color: #009b76;
+}
 .sidebar .sidenav-item-link .nav-text {
   margin-right: auto;
   text-transform: capitalize;
