@@ -4,6 +4,7 @@
 @section('content')
 <div id="layoutSidenav_content">
     <main>
+
          
 
         <script>
@@ -102,6 +103,7 @@
 <script src="{{ asset('js/custom.js') }}"></script>
 <script src="{{asset('plugins/toaster/toastr.min.js')}}"></script>
 @endsection
+
 
 <!-- Add the following CSS inside your blade or a linked stylesheet -->
 <style>

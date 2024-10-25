@@ -27,6 +27,7 @@
                                 <li class="d-flex mb-1">
                                     <i class="mdi mdi-phone mr-1"></i>
                                     <span>{{ $host->phone_number ? preg_replace('/(\d{3})(\d{3})(\d{4})/', '$1-$2-$3', $host->phone_number) : 'N/A' }}</span>
+
                                 </li>
                                 <li class="d-flex">
                                     <i class="mdi mdi-email mr-1"></i>
@@ -163,5 +164,6 @@
     max-height: 25px;
 }
 </style>
+
 
 @endsection

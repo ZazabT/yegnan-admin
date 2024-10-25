@@ -64,13 +64,12 @@ use App\Http\Controllers\Admin\ListingController;
 
              });
 
-
-
              // Host controller
              Route::controller(HostController::class)->group(function () {
                  // get all hosts
                  Route::get('hosts' , 'index')->name('hosts');
              });
+
 
 
 
@@ -90,5 +89,6 @@ use App\Http\Controllers\Admin\ListingController;
                 Route::get('categories' , 'index')->name('categories');
              });
 
+]
          });
          

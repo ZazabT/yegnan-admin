@@ -10,6 +10,7 @@
             <p class="ml-2">No users found.</p>
         </div>
     @else
+
     <div class="card-body">
         <h1 class="mt-4">Users Table</h1>
         <table id="productsTable" class="table table-hover table-product" style="width:100%">
@@ -22,6 +23,7 @@
                     <th>Age</th>
                     <th>Is Host</th>
                     <th></th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,12 +47,14 @@
                           </div>
                         </div>
                       </td>
+
                 </tr>
                 @endforeach
             </tbody>
         </table>
 
         <!-- Pagination -->
+
         <nav aria-label="Page navigation example" class="mt-4">
             <ul class="pagination justify-content-end pagination-seperated pagination-seperated-rounded">
                 @if ($users->onFirstPage())
@@ -70,7 +74,7 @@
                         <a class="page-link" href="{{ $users->url($i) }}">{{ $i }}</a>
                     </li>
                 @endfor
-                @if ($users->hasMorePages())
+ @if ($users->hasMorePages())
                     <li class="page-item">
                         <a class="page-link" href="{{ $users->nextPageUrl() }}" aria-label="Next">
                             Next
@@ -84,6 +88,7 @@
                 @endif
             </ul>
         </nav>
+
     </div>
     @endif
 </main>

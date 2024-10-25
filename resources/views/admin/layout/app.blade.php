@@ -53,6 +53,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <script src="{{asset('plugins/nprogress/nprogress.js')}}"></script>
+
 {{-- <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,7 +67,6 @@
     <link rel="icon" href="1728999055_yegnaLogo-removebg.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
->>>>>>> f2400bd63e12f5bea6d53f1481aa64535dfd4d47
 </head>
 
 
@@ -76,8 +76,7 @@
       NProgress.start();
     </script>
 
-    
-=======
+
 </body>
 </html> --}}
 
@@ -1533,12 +1532,13 @@
 
 
 
-    
+
                     <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
                     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
                     <script src="{{asset('plugins/simplebar/simplebar.min.js')}}"></script>
                     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
                     <script src="{{asset('plugins/toaster/toastr.min.js')}}"></script>
+
                     
                     
                     <script src="{{asset('plugins/prism/prism.js')}}"></script>
@@ -1551,8 +1551,6 @@
 
                     
 
-
-                    <!--  -->
 
 
   </body>

@@ -319,6 +319,7 @@ $(document).ready(function () {
       hideMethod: "fadeOut",
     };
     toastr.success("Welcome to Yegnan Dashboard", "Hola!");
+
   }
 
   if (toaster.length != 0) {
@@ -367,7 +368,7 @@ $(document).ready(function () {
 
   /*======== 13. PROGRESS BAR ========*/
   NProgress.done();
-  // did this work
+
 
   /*======== 14. DATA TABLE ========*/
   var productsTable = $("#productsTable");
