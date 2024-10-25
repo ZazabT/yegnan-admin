@@ -318,7 +318,8 @@ $(document).ready(function () {
       showMethod: "fadeIn",
       hideMethod: "fadeOut",
     };
-    toastr.success("Welcome to Mono Dashboard", "Howdy!");
+    toastr.success("Welcome to Yegnan Dashboard", "Hola!");
+
   }
 
   if (toaster.length != 0) {
@@ -367,6 +368,7 @@ $(document).ready(function () {
 
   /*======== 13. PROGRESS BAR ========*/
   NProgress.done();
+
 
   /*======== 14. DATA TABLE ========*/
   var productsTable = $("#productsTable");

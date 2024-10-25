@@ -4,6 +4,16 @@
 @section('content')
 <div id="layoutSidenav_content">
     <main>
+
+         
+
+        <script>
+            NProgress.configure({ showSpinner: false });
+            NProgress.start();
+          </script>
+      <div id="toaster"></div>
+
+
         <div class="container-fluid px-4 py-4">
             <div class="row">
                 <!-- Card 1: Total Users -->
@@ -86,6 +96,14 @@
 </div>
 
 @endsection
+
+@section('scripts')
+<script src='https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js'></script>
+<script src="{{ asset('js/custom.js') }}"></script>
+<script src="{{asset('plugins/toaster/toastr.min.js')}}"></script>
+@endsection
+
 
 <!-- Add the following CSS inside your blade or a linked stylesheet -->
 <style>

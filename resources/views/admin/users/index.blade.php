@@ -3,6 +3,14 @@
 @section('title', 'Users')
 @section('content')
 <main>
+
+    @if ($users->isEmpty())
+        <div class="card-body">
+            <h1 class="mt-4">Users Table</h1>
+            <p class="ml-2">No users found.</p>
+        </div>
+    @else
+
     <div class="card-body">
         <h1 class="mt-4">Users Table</h1>
         <table id="productsTable" class="table table-hover table-product" style="width:100%">
@@ -14,6 +22,7 @@
                     <th>Email</th>
                     <th>Age</th>
                     <th>Is Host</th>
+                    <th></th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -26,20 +35,26 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->age }}</td>
                     <td>{{ $user->isHomeOwner ? 'Yes' : 'No' }}</td>
-                    <td class="text-center">
-                        <a href="#">
-                          <i class="mdi mdi-open-in-new"></i>
-                        </a>
-                        <a href="#">
-                          <i class="mdi mdi-close text-danger"></i>
-                        </a>
-                    </td>
+                    <td>
+                        <div class="dropdown">
+                          <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                          </a>
+                
+                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item bg-danger text-white" href="#">Delete</a>
+                          </div>
+                        </div>
+                      </td>
+
                 </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <!-- Separated Rounded Pagination -->
+        <!-- Pagination -->
+
         <nav aria-label="Page navigation example" class="mt-4">
             <ul class="pagination justify-content-end pagination-seperated pagination-seperated-rounded">
                 @if ($users->onFirstPage())
@@ -59,8 +74,7 @@
                         <a class="page-link" href="{{ $users->url($i) }}">{{ $i }}</a>
                     </li>
                 @endfor
-
-                @if ($users->hasMorePages())
+ @if ($users->hasMorePages())
                     <li class="page-item">
                         <a class="page-link" href="{{ $users->nextPageUrl() }}" aria-label="Next">
                             Next
@@ -76,10 +90,15 @@
         </nav>
 
     </div>
+    @endif
 </main>
+
 
 @section('scripts')
 <script src='https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js'></script>
+
+<script src="{{ asset('js/custom.js') }}"></script>
+
 @endsection
 @endsection

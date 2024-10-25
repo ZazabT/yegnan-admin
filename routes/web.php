@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\ListingController;
 
 // Route::get('/', function () {
@@ -29,6 +31,8 @@ use App\Http\Controllers\Admin\ListingController;
          Route::middleware('auth:admin')->group(function () {
              Route::get('' , [AdminController::class, 'dashboard'])->name('dashboard');
 
+
+
              // user controller
              Route::controller(UserController::class)->group(function () {
                          // get all users
@@ -39,10 +43,15 @@ use App\Http\Controllers\Admin\ListingController;
                                
              });
 
+
+
              // listing controller
              Route::controller(ListingController::class)->group(function () {
                  // get all listing
-                 Route::get('listings', 'index')->name('listings.index');
+                 Route::get('listings', 'index')->name('listings');
+
+                 // confirm a list 
+                 Route::put('listings/{listing}/confirm', 'confirm')->name('listings.confirm');
 
                  // delete listing
                  Route::delete('listings/{listing}' , 'destroy')->name('listings.destroy');
@@ -60,5 +69,26 @@ use App\Http\Controllers\Admin\ListingController;
                  // get all hosts
                  Route::get('hosts' , 'index')->name('hosts');
              });
+
+
+
+
+
+             // Bookings controller
+             Route::controller(BookingController::class)->group(function () {
+                 // get all bookings
+                 Route::get('bookings' , 'index')->name('bookings');
+             });
+
+
+
+
+             // Categories controller 
+             Route::controller(CategoriesController::class)->group(function(){
+                // get all categories
+                Route::get('categories' , 'index')->name('categories');
+             });
+
+]
          });
          

@@ -1,3 +1,59 @@
+
+
+<!DOCTYPE html>
+
+<!--
+ // WEBSITE: https://themefisher.com
+ // TWITTER: https://twitter.com/themefisher
+ // FACEBOOK: https://www.facebook.com/themefisher
+ // GITHUB: https://github.com/themefisher/
+-->
+
+<html lang="en" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>@yield('title') | Yegnan Admin</title>
+
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
+  <link href="{{asset('plugins/material/css/materialdesignicons.min.css')}}" rel="stylesheet" />
+  <link href="{{asset('plugins/simplebar/simplebar.css')}}" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+
+  <link href="{{asset('plugins/nprogress/nprogress.css')}}" rel="stylesheet" />
+  <link href=" {{asset('plugins/toaster/toastr.min.css')}}"rel="stylesheet" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="{{asset('plugins/prism/prism.css')}}" rel="stylesheet" />
+  
+  
+  <!-- MONO CSS -->
+  <link id="main-css-href" rel="stylesheet" href="{{asset('css/style.css')}}" />
+
+  
+
+
+  <!-- FAVICON -->
+  <link href="{{asset('images/favicon.png')}}" rel="shortcut icon" />
+  
+
+
+
+
+  <!--
+    HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+  -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <script src="{{asset('plugins/nprogress/nprogress.js')}}"></script>
+
 {{-- <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,103 +68,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-<body>
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand ps-3" href="{{ url('/') }}">
-            Yegnan Admin
-        </a>
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    @if (Auth::check())
-                    @php
-                        $adminUser = Auth::guard('admin')->user();
-                        $firstName = explode(' ', $adminUser->name)[0];
-                    @endphp
-                          @if($adminUser->profile_picture)
-                               <img src="{{ asset('storage/'.Auth::guard('admin')->user()->profile_picture) }}" alt="Profile Picture" width="30" height="30" class="rounded-circle">
-                           @else
-                               <img src="https://ui-avatars.com/api/?name={{ $firstName }}" alt="Profile Picture" width="30" height="30" class="rounded-circle">
-                           @endif
-                    @endif
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Profile</a></li>
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            Logout
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
 
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="{{ route('dashboard') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Management</div>
-                        <a class="nav-link" href="{{route('users')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Users
-                        </a>
-                        <a class="nav-link" href="{{ url('/bookings') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
-                            Bookings
-                        </a>
-                        <a class="nav-link" href="{{ url('/listings') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                            Property Listings
-                        </a>
-                        <a class="nav-link" href="{{ url('/reviews') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
-                            Categories
-                        </a>
-                        <a class="nav-link" href="{{ url('/reviews') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
-                            Reviews
-                        </a>
-                        <a class="nav-link" href="{{ url('/reports') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                            Reports
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Settings</div>
-                        <a class="nav-link" href="{{ url('/settings') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
-                            Website Settings
-                        </a>
-                    </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    Admin
-                </div>
-            </nav>
-        </div>
 
-        <!-- Main content area -->
-        <div id="layoutSidenav_content">
-            @yield('content') <!-- This is where the content will be injected -->
-        </div>
-    </div>
+  <body class="navbar-fixed sidebar-fixed" id="body">
+    <script>
+      NProgress.configure({ showSpinner: false });
+      NProgress.start();
+    </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('js/scripts.js') }}"></script>
-    
+
 </body>
 </html> --}}
 
@@ -165,12 +133,6 @@
 
 
   <body class="navbar-fixed sidebar-fixed" id="body">
-    <script>
-      NProgress.configure({ showSpinner: false });
-      NProgress.start();
-    </script>
-
-    
 
     <!-- ====================================
     ——— WRAPPER
@@ -186,8 +148,10 @@
             <!-- Aplication Brand -->
             <div class="app-brand">
               <a href="/index.html">
-                <img src="{{asset('images/logo.png')}}" alt="Mono">
-                <span class="brand-name">MONO</span>
+
+                <img src="{{asset('images/sleek-icon.png')}} "alt="Mono">
+                <span class="brand-name font-weight-bold">Yegnan</span>
+
               </a>
             </div>
             <!-- begin sidebar scrollbar -->
@@ -232,23 +196,29 @@
                 
                   <li
                    >
-                    <a class="sidenav-item-link" href="chat.html">
-                      <i class="mdi mdi-wechat"></i>
-                      <span class="nav-text">Chat</span>
+
+                    <a class="sidenav-item-link" href="{{route('listings')}}">
+                      <i class="mdi mdi-home"></i>
+                      <span class="nav-text">Listings</span>
+
+                      <a class="sidenav-item-link" href="{{route('bookings')}}">
+                        <i class="mdi mdi-calendar-check"></i>
+                        <span class="nav-text">Bookings</span>
                     </a>
+                    
                   </li>
                 
 
                 
 
                 
-                  <li
-                   >
-                    <a class="sidenav-item-link" href="contacts.html">
-                      <i class="mdi mdi-phone"></i>
-                      <span class="nav-text">Contacts</span>
+                  <li>
+                    <a class="sidenav-item-link" href="{{route('categories')}}">
+                      <i class="mdi mdi-tag-multiple"></i>
+                        <span class="nav-text">Categories</span>
                     </a>
-                  </li>
+                </li>
+                
                 
 
                 
@@ -257,8 +227,8 @@
                   <li
                    >
                     <a class="sidenav-item-link" href="team.html">
-                      <i class="mdi mdi-account-group"></i>
-                      <span class="nav-text">Team</span>
+                      <i class="mdi mdi-map-marker"></i>
+                      <span class="nav-text">Locations</span>
                     </a>
                   </li>
                 
@@ -269,11 +239,19 @@
                   <li
                    >
                     <a class="sidenav-item-link" href="calendar.html">
-                      <i class="mdi mdi-calendar-check"></i>
-                      <span class="nav-text">Calendar</span>
+                      <i class="mdi mdi-star"></i>
+                      <span class="nav-text">Reviews</span>
                     </a>
                   </li>
                 
+
+                  <li
+                  >
+                   <a class="sidenav-item-link" href="calendar.html">
+                    <i class="mdi mdi-credit-card"></i>
+                     <span class="nav-text">Payments</span>
+                   </a>
+                 </li>
 
                 
 
@@ -333,14 +311,14 @@
 
                 
                   <li class="section-title">
-                    UI Elements
+                    Account Management
                   </li>
                 
 
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#ui-elements"
                       aria-expanded="false" aria-controls="ui-elements">
                       <i class="mdi mdi-folder-outline"></i>
@@ -706,13 +684,13 @@
                         
                       </div>
                     </ul>
-                  </li>
+                  </li> --}}
                 
 
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#charts"
                       aria-expanded="false" aria-controls="charts">
                       <i class="mdi mdi-chart-pie"></i>
@@ -736,15 +714,15 @@
                         
                       </div>
                     </ul>
-                  </li>
+                  </li> --}}
                 
 
                 
 
                 
-                  <li class="section-title">
+                  {{-- <li class="section-title">
                     Pages
-                  </li>
+                  </li> --}}
                 
 
                 
@@ -906,7 +884,7 @@
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#other-page"
                       aria-expanded="false" aria-controls="other-page">
                       <i class="mdi mdi-file-multiple"></i>
@@ -966,7 +944,7 @@
                         
                       </div>
                     </ul>
-                  </li>
+                  </li> --}}
                 
 
                 
@@ -980,20 +958,20 @@
                 
 
                 
-                  <li
+                  {{-- <li
                    class="active"
                    >
                     <a class="sidenav-item-link" href="getting-started.html">
                       <i class="mdi mdi-airplane"></i>
                       <span class="nav-text">Getting Started</span>
                     </a>
-                  </li>
+                  </li> --}}
                 
 
                 
 
                 
-                  <li  class="has-sub" >
+                  {{-- <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#customization"
                       aria-expanded="false" aria-controls="customization">
                       <i class="mdi mdi-square-edit-outline"></i>
@@ -1042,7 +1020,7 @@
                       </div>
                     </ul>
                   </li>
-                
+                 --}}
 
                 
               </ul>
@@ -1149,7 +1127,9 @@
                               </div>
                               <div class="media-body">
                                 <a href="user-profile.html">
-                                  <span class="title mb-0">John Doe</span>
+                                  <span class="title mb-0">
+                                    {{ Auth::guard('admin')->user()->name }}
+                                </span>
                                   <span class="discribe">Extremity sweetness difficult behaviour he of. On disposal of as landlord horrible. Afraid at highly months do things on at.</span>
                                   <span class="time">
                                     <time>Just now</time>...
@@ -1377,7 +1357,9 @@
                   <li class="dropdown user-menu">
                     <button class="dropdown-toggle nav-link" data-toggle="dropdown">
                       <img src="{{asset('images/user/user-xs-01.jpg')}}" class="user-image rounded-circle" alt="User Image" />
-                      <span class="d-none d-lg-inline-block">John Doe</span>
+                      <span class="d-none d-lg-inline-block">
+                        {{Auth::guard('admin')->user()->name}}
+                      </span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
                       <li>
@@ -1550,26 +1532,25 @@
 
 
 
-    
+
                     <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
                     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
                     <script src="{{asset('plugins/simplebar/simplebar.min.js')}}"></script>
                     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+                    <script src="{{asset('plugins/toaster/toastr.min.js')}}"></script>
 
                     
                     
                     <script src="{{asset('plugins/prism/prism.js')}}"></script>
                     
                     
-                    <script src="js/mono.js"></script>
-                    <script src="js/chart.js"></script>
-                    <script src="js/map.js"></script>
-                    <script src="js/custom.js"></script>
+                    <script src="{{asset('js/mono.js')}}"></script>
+                    <script src=" {{asset('js/chart.js')}}"></script>
+                    <script src="{{asset('js/map.js')}}"></script>
+                    <script src="{{asset('js/custom.js')}}"></script>
 
                     
 
-
-                    <!--  -->
 
 
   </body>

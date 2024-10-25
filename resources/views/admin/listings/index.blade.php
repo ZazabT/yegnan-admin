@@ -1,147 +1,197 @@
 @extends('admin.layout.app')
 
+@section('title', 'Listing')
 @section('content')
-<style>
-    /* Table Styling */
-    .table-borderless th, .table-borderless td {
-        border: none;
-    }
-
-    /* Table header styling */
-    table thead th, table tfoot th {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333;
-    }
-
-    /* Table data cell styling */
-    table tbody td {
-        font-size: 1rem;
-        padding: 15px;
-        color: #555;
-    }
-
-    /* Search input styling */
-    #searchInput {
-        margin-bottom: 20px;
-        padding: 10px;
-        border-radius: 8px;
-    }
-
-    /* Adding some space between rows */
-    table tbody tr {
-        border-bottom: 1px solid #eaeaea;
-    }
-
-    /* Hover effect on table rows */
-    table tbody tr:hover {
-        background-color: #f9f9f9;
-    }
-
-    /* Pagination styling */
-    .pagination {
-        justify-content: center;
-    }
-</style>
-
 <main>
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">Listings Table</h1>
+    @if ($listings->isEmpty())
+        <div class="card-body">
+            <h1 class="mt-4">Listing Table</h1>
+            <p class="ml-2">No Listing found.</p>
+        </div>
+    @else
+    <div class="card-body">
+        <h1 class="mt-4">Listing Table</h1>
 
         <!-- Search Input -->
-        <div class="mb-3">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search Listings...">
-        </div>
+        <input type="search" class="form-control" placeholder="Search..." aria-controls="productsTable">
 
-        <!-- Listings Table -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="datatablesSimple" class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Price per Night</th>
-                                <th>Max Guests</th>
-                                <th>Status</th>
-                                <th>Host</th>
-                                <th>Location</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Confirmed</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Title</th>
-                                <th>Price per Night</th>
-                                <th>Max Guests</th>
-                                <th>Status</th>
-                                <th>Host</th>
-                                <th>Location</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Confirmed</th>
-                                <th>Actions</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($listings as $listing)
-                                <tr>
-                                    <td>{{ $listing->title }}</td>
-                                    <td>${{ number_format($listing->price_per_night, 2) }}</td>
-                                    <td>{{ $listing->max_guest }}</td>
-                                    <td>{{ ucfirst($listing->status) }}</td>
-                                    <td>{{ $listing->host->user->firstName }}</td>
-                                    <td>{{ $listing->location->city }}</td>
-                                    <td>{{ $listing->start_date->format('Y-m-d') }}</td>
-                                    <td>{{ $listing->end_date->format('Y-m-d') }}</td>
-                                    <td>{{ $listing->confirmed ? 'Confirmed' : 'Pending'}}</td>
-                                    <td>
-                                        <a href="{{ route('listings.edit', $listing->id) }}" class="text-primary" data-toggle="tooltip" title="Edit Listing"><i class="fas fa-edit"></i></a>
+        <!-- Listing Table -->
+        <table id="productsTable" class="table table-hover table-product" style="width:100%">
+            <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Host</th>
+                  <th>Price Per Night</th>
+                  <th>Max Guests</th>
+                  <th>Starting Date</th>
+                  <th>Ending Date</th>
+                  <th>Status</th>
+                  <th>Is Confirmed</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+            <tbody>
+                @foreach ($listings as $listing)
+                <tr>
+                    <td>{{ $listing->id }}</td>
+                    <td>{{ $listing->host->username }}</td>
+                    <td>{{ $listing->price_per_night }} br</td>
+                    <td>{{ $listing->max_guest }}</td>
+                    <td>{{ $listing->start_date }}</td>
+                    <td>{{ $listing->end_date }}</td>
+                    <td>{{ $listing->status }}</td>
+                    <td>{{ $listing->confirmed ? 'Yes' : 'No' }}</td>
+                    <td>
+                    <button type="button" class="btn p-0" data-toggle="modal" data-target="#viewModal{{ $listing->id }}" title="View image">
+                      <i class="mdi mdi-eye mdi-24px eye_button"></i>
+                    </button>
+                    
+                    
+                   </td>
+                    <td>
+                      <div class="dropdown">
+                        <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                        </a>
 
-                                        <a href="{{ route('listings.edit', $listing->id) }}" 
-                                           class="text-danger" 
-                                           data-toggle="tooltip" 
-                                           title="Delete Listing"
-                                           onclick="event.preventDefault(); document.getElementById('delete-form-{{ $listing->id }}').submit();"><i class='fas fa-trash'></i></a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                            <!-- Confirm / Unconfirm Button -->
+                            <form action="{{ route('listings.confirm', $listing->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" 
+                                        class="dropdown-item {{ $listing->confirmed ? 'text-danger' : 'text-success' }} font-weight-bold">
+                                    {{ $listing->confirmed ? 'Unconfirm' : 'Confirm' }}
+                                </button>
+                            </form>
+                            <!-- Edit Button -->
+                            <a class="dropdown-item font-weight-bold" href="#">
+                                Edit
+                            </a>
+                            <!-- Delete Button -->
+                            <form action="{{ route('listings.destroy', $listing->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        class="dropdown-item text-white font-weight-bold bg-danger" 
+                                        style="border: none;">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
 
-                                        <form id='delete-form-{{ $listing->id }}' action="#" method='POST' style='display:none;'>
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                </tr>
 
-                    <!-- Pagination Controls -->
-                    {{ $listings->onEachSide(1)->links() }}
-                </div>
+                <!-- Modal Structure for Listing Details -->
+                <div class="modal fade" id="viewModal{{ $listing->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg" role="document"> <!-- Use modal-lg for a wider modal -->
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="viewModalLabel">{{ $listing->title }}</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                              @if ($listing->item_images->isEmpty())
+                                  <p>No images available for this listing.</p>
+                              @else
+                                  <div class="row">
+                                      @foreach ($listing->item_images as $image)
+                                          <div class="col-12 mb-3"> <!-- Change col size for larger images -->
+                                              <img src="{{ asset($image->image_url) }}" alt="Listing Image" class="img-fluid modalImage" > 
+                                          </div>
+                                      @endforeach
+                                  </div>
+                              @endif
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+                @endforeach
+            </tbody>
+        </table>
 
-            </div>
-        </div>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example" class="mt-4">
+            <ul class="pagination justify-content-end pagination-seperated pagination-seperated-rounded">
+                @if ($listings->onFirstPage())
+                    <li class="page-item disabled">
+                        <span class="page-link">Prev</span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $listings->previousPageUrl() }}" aria-label="Previous">
+                            <span aria-hidden="true" class="mdi mdi-chevron-left mr-1"></span> Prev
+                        </a>
+                    </li>
+                @endif
 
+                @for ($i = 1; $i <= $listings->lastPage(); $i++)
+                    <li class="page-item {{ ($listings->currentPage() == $i) ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $listings->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                @if ($listings->hasMorePages())
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $listings->nextPageUrl() }}" aria-label="Next">
+                            Next
+                            <span aria-hidden="true" class="mdi mdi-chevron-right ml-1"></span>
+                        </a>
+                    </li>
+                @else
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                @endif
+            </ul>
+        </nav>
     </div>
+    @endif
 </main>
+<style>
+ .eye_button:hover{
+   color: white;
+ }
+
+
+ .modalImage {
+    max-height: 400px;
+    width: 100%; 
+    object-fit: cover; 
+    border-radius: 10px;
+    transition: border-radius 0.3s ease; 
+}
+
+.modalImage:hover {
+    border-radius: 0%; 
+    transform: scale(1.06);
+}
+
+.modal-title{
+  font-size: 20px;
+  font-weight: 900;
+  color:violet;
+  letter-spacing: 2;
+}
+
+
+.close{
+  font-size: 30px;
+  font-weight: 900;
+  color: red;
+}
+
+</style>
 
 @section('scripts')
 <script src='https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js'></script>
-
-<script>
-// Search functionality for listings
-$(document).ready(function() {
-    $('#searchInput').on('keyup', function() {
-        var value = $(this).val().toLowerCase();
-        $('#datatablesSimple tbody tr').filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
-    });
-});
-</script>
-
+<script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @endsection

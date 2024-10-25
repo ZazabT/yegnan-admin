@@ -48,34 +48,42 @@ class HostController extends Controller
         $userFirstName = $user->firstName; 
 
         // Check if the request contains a profile picture
-        if ($request->hasFile('profilePicture')) {
-            // Create a unique image name based on the user's first name and current timestamp
-            $imageName = $userFirstName . '_profile_' . time() . '.' . $request->file('profilePicture')->getClientOriginalExtension();
-            
-            // Store the uploaded image in a specific folder and get its path
-            $imagePath = $request->file('profilePicture')->move(public_path('host_profile'), $imageName);
-            $validatedHost['profilePicture'] = $imagePath;
-        }
+if ($request->hasFile('profilePicture')) {
+    // Create a unique image name based on the user's first name and current timestamp
+    $imageName = $userFirstName . '_profile_' . time() . '.' . $request->file('profilePicture')->getClientOriginalExtension();
+    
+    // Store the uploaded image in the 'host_profile' directory in the 'public' folder
+    $imagePath = $request->file('profilePicture')->move(public_path('host_profile'), $imageName);
+    
+    // Save the public path for storing in the database (relative to the public folder)
+    $validatedHost['profilePicture'] = 'host_profile/' . $imageName; 
+}
 
-        // Check if the request contains a front ID image
-        if ($request->hasFile('frontIdImage')) {
-            // Create a unique image name for the front ID image
-            $frontIdImageName = $userFirstName . '_frontId_' . time() . '.' . $request->file('frontIdImage')->getClientOriginalExtension();
-            
-            // Store the uploaded image in a specific folder and get its path
-            $imagePath = $request->file('frontIdImage')->move(public_path('host_Id_frontIdImage'), $frontIdImageName);
-            $validatedHost['frontIdImage'] = $imagePath;
-        }
+// Check if the request contains a front ID image
+if ($request->hasFile('frontIdImage')) {
+    // Create a unique image name for the front ID image
+    $frontIdImageName = $userFirstName . '_frontId_' . time() . '.' . $request->file('frontIdImage')->getClientOriginalExtension();
+    
+    // Store the uploaded image in the 'host_Id_frontIdImage' directory in the 'public' folder
+    $imagePath = $request->file('frontIdImage')->move(public_path('host_Id_frontIdImage'), $frontIdImageName);
+    
+    // Save the public path for storing in the database (relative to the public folder)
+    $validatedHost['frontIdImage'] = 'host_Id_frontIdImage/' . $frontIdImageName; 
+}
 
-        // Check if the request contains a back ID image
-        if ($request->hasFile('backIdImage')) {
-            // Create a unique image name for the back ID image
-            $backIdImageName = $userFirstName . '_backId_' . time() . '.' . $request->file('backIdImage')->getClientOriginalExtension();
-            
-            // Store the uploaded image in a specific folder and get its path
-            $imagePath = $request->file('backIdImage')->move(public_path('host_Id_backIdImage'), $backIdImageName);
-            $validatedHost['backIdImage'] = $imagePath;
-        }
+// Check if the request contains a back ID image
+if ($request->hasFile('backIdImage')) {
+    // Create a unique image name for the back ID image
+    $backIdImageName = $userFirstName . '_backId_' . time() . '.' . $request->file('backIdImage')->getClientOriginalExtension();
+    
+    // Store the uploaded image in the 'host_Id_backIdImage' directory in the 'public' folder
+    $imagePath = $request->file('backIdImage')->move(public_path('host_Id_backIdImage'), $backIdImageName);
+    
+    // Save the public path for storing in the database (relative to the public folder)
+    $validatedHost['backIdImage'] = 'host_Id_backIdImage/' . $backIdImageName;
+}
+
+        
 
         try {
             // Create the host record in the database
