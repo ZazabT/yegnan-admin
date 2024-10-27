@@ -226,7 +226,7 @@
                 
                   <li
                    >
-                    <a class="sidenav-item-link" href="team.html">
+                    <a class="sidenav-item-link" href="{{route('locations')}}">
                       <i class="mdi mdi-map-marker"></i>
                       <span class="nav-text">Locations</span>
                     </a>

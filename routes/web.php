@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\ListingController;
+use App\Http\Controllers\Admin\LocationController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -89,6 +90,14 @@ use App\Http\Controllers\Admin\ListingController;
                 Route::get('categories' , 'index')->name('categories');
              });
 
-]
+
+
+
+             //Locations controller
+             Route::controller(LocationController::class)->group(function(){
+                // get all locations
+                Route::get('locations' , 'index')->name('locations');
+             });
+
          });
          

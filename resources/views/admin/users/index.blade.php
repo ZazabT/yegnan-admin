@@ -23,7 +23,6 @@
                     <th>Age</th>
                     <th>Is Host</th>
                     <th></th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
