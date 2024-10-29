@@ -99,9 +99,6 @@ class BookingController extends Controller
     }
     }
 
-    
-
-
     // get Bookings for all listing of the spesific host  
     public function getHostBookings($id){
     }

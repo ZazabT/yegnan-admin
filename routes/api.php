@@ -45,7 +45,8 @@ Route::controller(ListingController::class)->group(function () {
 // Host routes
 Route::middleware('auth:sanctum')->post('/host/create', [HostController::class, 'createHost']);
 Route::middleware('auth:sanctum')->get('/host/profile/{id}', [HostController::class, 'getHost']);
-Route::middleware('auth:sanctum')->get('/host/profile/update{id}', [HostController::class, 'updateHostProfile']);
+Route::middleware('auth:sanctum')->get('/host/profile/update/{id}', [HostController::class, 'updateHostProfile']);
+Route::middleware('auth:sanctum')->get('/host/acceptbooking/{id}', [HostController::class, 'getHostProfile']);
 
 
 
