@@ -19,6 +19,9 @@ return new class extends Migration
             $table->date('checkout_date');
             $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->integer('guest_count');
+            $table->enum('payment_status', ['pending', 'paid'])->default('pending');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -17,6 +17,8 @@ class Booking extends Model
         'checkout_date',
         'total_price',
         'status',
+        'payment_status',
+        'guest_count',
     ];
 
     // Relationships with guests
