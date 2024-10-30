@@ -128,11 +128,11 @@ if ($request->hasFile('backIdImage')) {
         
          // Try to get host profile with related user
         try {
-            $host = Host::with('user')->find($id);
+            $host = Host::with(['user' , 'listings.item_images' , 'listings.categories' , 'listings.location'  ,])->where('user_id', $id)->get();
             return response()->json([
                 'status' => 200,
                 'message' => 'Host profile retrieved successfully',
-                'host' => $host
+                'hostProfile' => $host
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

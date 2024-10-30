@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         
-        // Schedule the command to run hourly
-        $schedule->command('listing:update-status')->hourly();
+        // Schedule the command to run every minutes
+        $schedule->command('listing:update-status')->everyMinute();
     }
 }

@@ -9,5 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 
-// Schedule your custom command to run every hour
-Schedule::command('listing:update-status')->hourly();
+// Schedule your custom command to run every minutes
+Schedule::command('listing:update-status')->everyMinute();
