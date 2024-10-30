@@ -102,30 +102,37 @@ class BookingController extends Controller
     }
 
     // get Bookings for all listing of the spesific host  
-    public function getHostBookings($id){
-         // check if the user is logged in
-         if (!Auth::check()) {
-             return response()->json([
-                 'message' => 'Unauthorized',
-                 'status' => 401
-             ], 401);
-         }
-          
-         // try to get all bookings for the host wihh there listings
-         try {
-             $bookings = Booking::with(['listing', 'guest.user'])->where('host_id', $id)->get();
-             return response()->json([
-                 'status' => 200,
-                 'message' => 'Bookings retrieved successfully',
-                 'bookings' => $bookings
-             ], 200);
-         } catch (\Throwable $th) {
-             return response()->json([
-                 'status' => 500,
-                 'message' => 'Failed to retrieve bookings',
-                 'error' => 'Failed to retrieve bookings ' . $th->getMessage() ], 500);
-         }
+    public function getHostBookings($id)
+    {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+                'status' => 401
+            ], 401);
+        }
+    
+        try {
+            $bookings = Booking::with(['listing.item_images', 'guest.user' ])
+                ->whereHas('listing', function ($query) use ($id) {
+                    $query->where('host_id', $id);
+                })
+                ->get();
+    
+            return response()->json([
+                'status' => 200,
+                'message' => 'Bookings retrieved successfully',
+                'bookings' => $bookings
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve bookings',
+                'error' => 'Failed to retrieve bookings ' . $th->getMessage()
+            ], 500);
+        }
     }
+    
+    
 
 
     // get bookings for specific guest
@@ -155,3 +162,40 @@ class BookingController extends Controller
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

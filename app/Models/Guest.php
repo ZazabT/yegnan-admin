@@ -19,8 +19,8 @@ class Guest extends Model
 
 
     // Relations with user 
-    public function user(){
-
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 

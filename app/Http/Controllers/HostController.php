@@ -128,7 +128,7 @@ if ($request->hasFile('backIdImage')) {
         
          // Try to get host profile with related user
         try {
-            $host = Host::with(['user' , 'listings.item_images' , 'listings.categories' , 'listings.location'  ,])->where('user_id', $id)->get();
+            $host = Host::with(['user' , 'listings.item_images' , 'listings.categories' , 'listings.location'])->where('user_id', $id)->get();
             return response()->json([
                 'status' => 200,
                 'message' => 'Host profile retrieved successfully',
