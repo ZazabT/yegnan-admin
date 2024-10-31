@@ -88,6 +88,16 @@ use App\Http\Controllers\Admin\LocationController;
              Route::controller(CategoriesController::class)->group(function(){
                 // get all categories
                 Route::get('categories' , 'index')->name('categories');
+                // get category create page // show
+                Route::get('categories/create', 'create')->name('categories.create');
+                // create category
+                Route::post('categories' , 'store')->name('categories.store');
+                // edit category
+                Route::get('categories/{category}/edit' , 'edit')->name('categories.edit');
+                // update category
+                Route::put('categories/{category}' , 'update')->name('categories.update');
+                // delete category
+                Route::delete('categories/{category}' , 'destroy')->name('categories.destroy');
              });
 
 
@@ -97,6 +107,18 @@ use App\Http\Controllers\Admin\LocationController;
              Route::controller(LocationController::class)->group(function(){
                 // get all locations
                 Route::get('locations' , 'index')->name('locations');
+                // get location create page // show
+                Route::get('locations/create' , 'create')->name('locations.create');
+                // create location
+                Route::post('locations' , 'store')->name('locations.store');
+                // edit location
+                Route::get('locations/{location}/edit' , 'edit')->name('locations.edit');
+                // update location
+                Route::put('locations/{location}' , 'update')->name('locations.update');
+                // delete location
+                Route::delete('locations/{location}' , 'destroy')->name('locations.destroy');
+
+
              });
 
          });

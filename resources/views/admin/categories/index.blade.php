@@ -16,8 +16,25 @@
     
     <div class="content-wrapper m-4">
         <h1 class="mt-4">Categories Table</h1>
-    <!-- Search Input -->
-    <input type="search" class="form-control" placeholder="Search..." aria-controls="productsTable">
+       <!-- Search Input and  -->
+       <div class="d-flex justify-content-between">
+        <input 
+            type="search" 
+            class="form-control border-0 w-25 shadow-none" 
+            placeholder="Search..." 
+            aria-controls="productsTable" 
+            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+        >
+        <button 
+            onclick=" window.location='{{ route('categories.create') }}'" 
+            type="button" 
+            class="btn btn-success rounded-2 items-end" 
+            style="padding: 10px 20px; margin-right: 30px;"
+        >
+            +
+        </button>
+
+    </div>
         <table class="table table-striped">
 
                 <thead>
@@ -42,8 +59,8 @@
                               </a>
                     
                               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">Edit</a>
-                                <a class="dropdown-item bg-danger text-white" href="#">Delete</a>
+                                <a class="dropdown-item" href="{{ route('categories.edit', $category->id) }}">Edit</a>
+                                <a class="dropdown-item bg-danger text-white" href="{{ route('categories.destroy', $category->id) }}">Delete</a>
                               </div>
                             </div>
                           </td>

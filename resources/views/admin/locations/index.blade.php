@@ -17,8 +17,27 @@
     
     <div class="content-wrapper m-4">
         <h1 class="mt-4">Location Table</h1>
-    <!-- Search Input -->
-    <input type="search" class="form-control" placeholder="Search..." aria-controls="productsTable">
+    <!-- Search Input and  -->
+    <div class="d-flex justify-content-between">
+        <input 
+            type="search" 
+            class="form-control border-0 w-25 shadow-none" 
+            placeholder="Search..." 
+            aria-controls="productsTable" 
+            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+        >
+        <button 
+            onclick=" window.location='{{ route('locations.create') }}'" 
+            type="button" 
+            class="btn btn-success rounded-2 items-end" 
+            style="padding: 10px 20px; margin-right: 30px;"
+        >
+            +
+        </button>
+
+    </div>
+    
+   
         <table class="table table-striped">
 
                 <thead>
@@ -45,8 +64,16 @@
                               </a>
                     
                               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">Edit</a>
-                                <a class="dropdown-item bg-danger text-white" href="#">Delete</a>
+                                <a class="dropdown-item" href="{{ route('locations.edit', $location->id)}}">Edit</a>
+                                <form action="{{ route('locations.destroy', $location->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="dropdown-item text-white font-weight-bold bg-danger" 
+                                            style="border: none;">
+                                        Delete
+                                    </button>
+                                </form>
                               </div>
                             </div>
                           </td>
@@ -56,10 +83,12 @@
                
             </table>
            
+            {{-- Paginater  --}}
 
+            {{ $locations->links() }}
 
             <!-- Pagination -->
-        <nav aria-label="Page navigation example" class="mt-4">
+        {{-- <nav aria-label="Page navigation example" class="mt-4">
             <ul class="pagination justify-content-end pagination-seperated pagination-seperated-rounded">
                 @if ($locations->onFirstPage())
                     <li class="page-item disabled">
@@ -91,7 +120,7 @@
                     </li>
                 @endif
             </ul>
-        </nav>
+        </nav> --}}
             
         </div>
     </div>
