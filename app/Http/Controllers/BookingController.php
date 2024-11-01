@@ -161,7 +161,40 @@ class BookingController extends Controller
                 'error' => 'Failed to retrieve bookings ' . $th->getMessage() ], 500);
         }
     }
+
+
+
+
+    // get a booking by id
+    public function getBookingbyId($id){
+
+        // check if the user is logged in
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+                'status' => 401
+            ], 401);
+        }
+
+        // try to get booking by id
+        try {
+            $booking = Booking::with(['listing.item_images', 'guest.user' , 'host.user'])->where('id', $id)->first();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Booking retrieved successfully',
+                'booking' => $booking
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve booking',
+                'error' => 'Failed to retrieve booking ' . $th->getMessage() ], 500);
+        }
+    }
 }
+
+
+
 
 
 

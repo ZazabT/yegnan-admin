@@ -176,7 +176,7 @@
 .modal-title{
   font-size: 20px;
   font-weight: 900;
-  color:violet;
+  color:Black;
   letter-spacing: 2;
 }
 
@@ -195,3 +195,7 @@
 <script src="{{ asset('js/custom.js') }}"></script>
 @endsection
 @endsection
+
+
+
+{{-- <div id="productsTable_filter" class="dataTables_filter"><label><input type="search" class="" placeholder="Search..." aria-controls="productsTable"></label></div> --}}

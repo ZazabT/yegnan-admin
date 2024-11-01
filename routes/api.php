@@ -59,3 +59,5 @@ Route::middleware('auth:sanctum')->post('/booking/reserve', [BookingController::
 Route::middleware('auth:sanctum')->get('/bookings/host/{id}', [BookingController::class, 'getHostBookings']);
 // get all booking of the specific guest 
 Route::middleware('auth:sanctum')->get('/bookings/guest/{id}', [BookingController::class, 'getGuestBookings']);
+// get booking by id
+Route::middleware('auth:sanctum')->get('/booking/{id}', [BookingController::class, 'getBookingbyId']);
