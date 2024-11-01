@@ -178,7 +178,7 @@ class BookingController extends Controller
 
         // try to get booking by id
         try {
-            $booking = Booking::with(['listing.item_images', 'guest.user' , 'host.user'])->where('id', $id)->first();
+            $booking = Booking::with(['listing.item_images', 'guest.user'])->where('id', $id)->first();
             return response()->json([
                 'status' => 200,
                 'message' => 'Booking retrieved successfully',
