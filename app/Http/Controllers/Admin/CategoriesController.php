@@ -35,7 +35,7 @@ class CategoriesController extends Controller
         ]);
 
         try {
-            $category = Category::create($request->all());
+             Category::create($request->all());
             return redirect()->route('categories')->with('success', 'Category created successfully.');
         } catch (\Exception $e) {
             return redirect()->route('categories.create')->with('error', $e->getMessage());

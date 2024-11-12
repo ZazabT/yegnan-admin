@@ -117,7 +117,7 @@ class HostController extends Controller
 
         // Try to get host profile with related user
         try {
-            $host = Host::with(['user', 'listings.item_images', 'listings.categories', 'listings.location'])
+            $host = Host::with(['user', 'listings.item_images', 'listings.categories', 'listings.bookings' ])
                         ->where('user_id', $id)
                         ->get();
             return response()->json([
