@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -12,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hosts', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary(); // Use UUID as the primary key
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->longText('hostDescription');  
             $table->string('profilePicture')->nullable(); 
@@ -30,9 +31,7 @@ return new class extends Migration
             $table->decimal('rating', 3, 2)->nullable();
             $table->boolean('isVerified')->default(false);
             $table->timestamps();
-            
         });
-        
     }
 
     /**

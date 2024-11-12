@@ -68,4 +68,23 @@ class User extends Authenticatable
     {
         return $this->hasOne(Guest::class);
     }
+
+
+    // Relation with conversationsAsaHost
+    public function conversationsAsHost()
+    {
+        return $this->hasMany(Conversation::class, 'host_id');
+    }
+
+    // Relation with conversationsAsGuest
+    public function conversationsAsGuest()
+    {
+        return $this->hasMany(Conversation::class, 'guest_id');
+    }
+
+    // Relation with messages
+    public function messages()
+    {
+        return $this->hasMany(Messages::class , 'sender_id');
+    } 
 }

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('guests', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary(); // Use UUID as the primary key
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('username')->nullable();
             $table->decimal('rating', 3, 2)->nullable();
-            $table-> integer('totalBookings')->default(0)->nullable();
+            $table->integer('totalBookings')->default(0)->nullable();
             $table->string('profilePicture')->nullable();
             $table->decimal('totalSpent', 10, 2)->default(0); 
             $table->string('country')->nullable();

@@ -25,7 +25,10 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date'); 
             $table->enum('status', ['active', 'inactive', 'soldout', 'comingsoon'])->default('comingsoon'); 
-            $table->foreignId('host_id')->constrained()->onDelete('cascade'); 
+              // Foreign key for hosts - referencing UUID
+              $table->uuid('host_id');  
+              $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
+
             $table->foreignId('location_id')->constrained()->onDelete('cascade'); 
             $table->timestamps(); 
             $table->softDeletes(); 

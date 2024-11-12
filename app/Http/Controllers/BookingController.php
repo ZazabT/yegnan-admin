@@ -148,7 +148,7 @@ class BookingController extends Controller
          
         // try to get all bookings for the guest with there listings and host
         try {
-            $bookings = Booking::with(['listing', 'host.user'])->where('guest_id', $id)->get();
+            $bookings = Booking::with(['listing.item_images', 'guest.user' , 'listing.host.user'])->where('guest_id', $id)->get();
             return response()->json([
                 'status' => 200,
                 'message' => 'Bookings retrieved successfully',
@@ -178,7 +178,7 @@ class BookingController extends Controller
 
         // try to get booking by id
         try {
-            $booking = Booking::with(['listing.item_images', 'guest.user'])->where('id', $id)->first();
+            $booking = Booking::with(['listing.item_images', 'guest.user' , 'listing.host.user'])->where('id', $id)->first();
             return response()->json([
                 'status' => 200,
                 'message' => 'Booking retrieved successfully',
@@ -191,6 +191,131 @@ class BookingController extends Controller
                 'error' => 'Failed to retrieve booking ' . $th->getMessage() ], 500);
         }
     }
+
+      // accept a booking 
+      public function acceptBooking($id)
+      {
+          DB::beginTransaction();
+      
+          try {
+              $booking = Booking::where('id', $id)->first();
+              if (!$booking) {
+                  return response()->json(['status' => 404, 'message' => 'Booking not found or not pending'], 404);
+              }
+      
+              $listingId = $booking->listing_id;
+              $checkinDate = $booking->checkin_date;
+              $checkoutDate = $booking->checkout_date;
+      
+              $conflictingAcceptedBooking = Booking::where('listing_id', $listingId)
+                  ->where('status', 'accepted')
+                  ->where(function ($query) use ($checkinDate, $checkoutDate) {
+                      $query->whereBetween('checkin_date', [$checkinDate, $checkoutDate])
+                          ->orWhereBetween('checkout_date', [$checkinDate, $checkoutDate])
+                          ->orWhere(function ($query) use ($checkinDate, $checkoutDate) {
+                              $query->where('checkin_date', '<=', $checkinDate)
+                                    ->where('checkout_date', '>=', $checkoutDate);
+                          });
+                  })->exists();
+      
+              if ($conflictingAcceptedBooking) {
+                  return response()->json(['status' => 409, 'message' => 'Conflict with existing accepted booking. Cannot accept this booking.'], 409);
+              }
+      
+              $booking->status = 'accepted';
+              $booking->save();
+      
+              Booking::where('listing_id', $listingId)
+                  ->where('status', 'pending')
+                  ->where(function ($query) use ($checkinDate, $checkoutDate) {
+                      $query->whereBetween('checkin_date', [$checkinDate, $checkoutDate])
+                          ->orWhereBetween('checkout_date', [$checkinDate, $checkoutDate])
+                          ->orWhere(function ($query) use ($checkinDate, $checkoutDate) {
+                              $query->where('checkin_date', '<=', $checkinDate)
+                                    ->where('checkout_date', '>=', $checkoutDate);
+                          });
+                  })->update(['status' => 'rejected']);
+      
+              $fullyBooked = $this->checkIfListingIsFullyBooked($listingId);
+      
+              if ($fullyBooked) {
+                  Listing::where('id', $listingId)->update(['status' => 'soldout']);
+              }
+      
+              DB::commit();
+      
+              $message = 'Booking accepted and conflicting pending bookings rejected.';
+              if ($fullyBooked) {
+                  $message .= ' Listing is now fully booked and marked as sold out.';
+              }
+      
+              return response()->json(['status' => 200, 'message' => $message], 200);
+      
+          } catch (Exception $e) {
+              DB::rollback();
+              return response()->json(['status' => 500, 'message' => 'Error accepting booking', 'error' => $e->getMessage()], 500);
+          }
+      }
+
+
+
+
+
+      /**
+ * Check if all dates within a listing's availability period are fully booked.
+ */
+private function checkIfListingIsFullyBooked($listingId)
+{
+    $listing = Listing::findOrFail($listingId);
+
+    // Check if there's any day within the available period without a booking
+    $unbookedDatesExist = Booking::where('listing_id', $listingId)
+        ->where('status', 'accepted')
+        ->where(function ($query) use ($listing) {
+            // Get bookings that overlap any part of the listing's available range
+            $query->where('checkin_date', '>', $listing->start_date)
+                  ->orWhere('checkout_date', '<', $listing->end_date);
+        })
+        ->exists();
+
+    // If no unbooked dates exist, mark as fully booked
+    return !$unbookedDatesExist;
+}
+
+
+
+
+
+
+    // reject a booking
+    public function rejectBooking($id) {
+        // Check if the user is logged in
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+                'status' => 401
+            ], 401);
+        }
+
+        // find the booking 
+        $booking = Booking::where('id', $id)->first();
+        if (!$booking) {
+            return response()->json([
+                'message' => 'Booking not found',
+                'status' => 404
+            ], 404);
+        }
+
+        // reject the booking
+        $booking->status = 'rejected';
+        $booking->save();
+        return response()->json([
+            'message' => 'Booking rejected',
+            'status' => 200
+        ], 200);
+    } 
+
+    
 }
 
 

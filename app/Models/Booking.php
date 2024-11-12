@@ -19,6 +19,7 @@ class Booking extends Model
         'status',
         'payment_status',
         'guest_count',
+        'hasMessage'
     ];
 
     // Relationships with guests
@@ -31,6 +32,13 @@ class Booking extends Model
     public function listing()
     {
         return $this->belongsTo(Listing::class, 'listing_id');
+    }
+
+
+    // Relationships with Conversations
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
     }
 
     
