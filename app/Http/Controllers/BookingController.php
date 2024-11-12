@@ -6,6 +6,7 @@ use Log;
 use Exception;
 use App\Models\Booking;
 use App\Models\Listing;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -131,6 +132,40 @@ class BookingController extends Controller
             ], 500);
         }
     }
+
+
+
+    // get todays checkings for the host 
+    public function getTodaysCheckings($id){
+
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+                'status' => 401
+            ], 401);
+        }
+        
+        try {
+            $bookings = Booking::with(['listing.item_images', 'guest.user' , 'listing.host.user'])
+                ->whereHas('listing', function ($query) use ($id) {
+                $query->where('host_id', $id);
+                })
+                ->where('status', 'accepted')
+                ->whereDate('checkin_date', Carbon::today())
+                ->get();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Bookings retrieved successfully',
+                    'bookings' => $bookings
+                ], 200);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Failed to retrieve bookings',
+                    'error' => 'Failed to retrieve bookings ' . $th->getMessage()
+                ], 500);
+            }
+    }
     
     
 
@@ -155,6 +190,37 @@ class BookingController extends Controller
                 'bookings' => $bookings
             ], 200);
         } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve bookings',
+                'error' => 'Failed to retrieve bookings ' . $th->getMessage() ], 500);
+        }
+    }
+
+
+
+    // get todays cheackings for the guest
+    public function getGuestTodaysCheckings($id){
+
+        // check if the user is logged in
+        if(!Auth::check()){
+            return response()->json([
+                'message' => 'Unauthorized',
+                'status' => 401
+            ], 401);
+        }
+
+        // try to get todays checking for the guest 
+        try {
+            $bookings = Booking::with(['listing.item_images', 'guest.user' , 'listing.host.user'])
+            ->where('guest_id', $id)->where('status', 'accepted')
+            ->whereDate('checkin_date', Carbon::today())->get();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Bookings retrieved successfully',
+                'bookings' => $bookings
+            ]);
+        }catch (\Throwable $th) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to retrieve bookings',
@@ -193,7 +259,7 @@ class BookingController extends Controller
     }
 
       // accept a booking 
-      public function acceptBooking($id)
+    public function acceptBooking($id)
       {
           DB::beginTransaction();
       

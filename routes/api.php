@@ -36,19 +36,23 @@ Route::get('/locations', [LocationController::class, 'index']);
 
 Route::controller(ListingController::class)->group(function () {
    // add listing
-   Route::post('/listings/create', 'create')->middleware('auth:sanctum');
+Route::post('/listings/create', 'create')->middleware('auth:sanctum');
    // get all listings
-   Route::get('/listings', 'getAllListings');
+Route::get('/listings', 'getAllListings');
    // get listing
-   Route::get('/listing/{id}', 'getListing');
+Route::get('/listing/{id}', 'getListing');
 });
 
 
 
 
 // Host routes
+
+// Create Host
 Route::middleware('auth:sanctum')->post('/host/create', [HostController::class, 'createHost']);
+// get host info
 Route::middleware('auth:sanctum')->get('/host/profile/{id}', [HostController::class, 'getHostProfile']);
+// update host info
 Route::middleware('auth:sanctum')->get('/host/profile/update/{id}', [HostController::class, 'updateHostProfile']);
 
 
@@ -72,12 +76,20 @@ Route::middleware('auth:sanctum')->get('/booking/{id}', [BookingController::clas
 Route::middleware('auth:sanctum')->put('/booking/acceptbooking/{id}', [BookingController::class, 'acceptBooking']);
 //reject booking
 Route::middleware('auth:sanctum')->put('/booking/rejectbooking/{id}', [BookingController::class, 'rejectBooking']);
+// get todays checkings for the host
+Route::middleware('auth:sanctum')->get('/bookings/host/today/{id}', [BookingController::class, 'getTodaysCheckings']);
+// get todays checkings for the guest
+Route::middleware('auth:sanctum')->get('/bookings/guest/today/{id}', [BookingController::class, 'getGuestTodaysCheckings']);
 
 
 
 // Conversation routes
+
+// sayHi
 Route::middleware('auth:sanctum')->post('/sayHi', [ConversationController::class, 'sayHi']);
+// getConversationMessages
 Route::middleware('auth:sanctum')->get('/getConversationMessages/{id}', [ConversationController::class, 'getConversationMessages']);
+// usersConversationWith
 Route::middleware('auth:sanctum')->get('/usersConversationWith/{id}', [ConversationController::class, 'usersConversationWith']);
 
 
