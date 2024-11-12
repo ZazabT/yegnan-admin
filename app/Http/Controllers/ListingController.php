@@ -111,7 +111,6 @@ class ListingController extends Controller
         }
     }
     
-
     // get all listing 
     public function getAllListings(){
         // Try to get all listings 
@@ -151,6 +150,134 @@ class ListingController extends Controller
                 'message' => 'Failed to retrieve listings',
                 'error' => 'Failed to retrieve listings ' . $th->getMessage() ], 500);
         }
+    }
+
+    // update listing
+    public function updateListing(Request $request , $id){
+        
+        // check if the user is logged in 
+        if(!Auth::check()){
+            return response()->json([
+                'status' => 401,
+                'message' => 'Unauthorized'
+            ],401);
+        }
+
+
+        // find the listing by id and if not found return 404
+        $listing = Listing::find($id);
+
+        if(!$listing){
+            return response()->json([
+                 'status'=>404,
+                 'message'=>'Listing not found with this id' . $id
+            ],404);
+        }
+
+
+        // check if there is a booking for this listing if there is bookig it  can't update 
+        if($listing->bookings->exists()){
+            return response()->json([
+               'status' => 400,
+               'message' => "This listing has bookings and cannot be updated."
+            ], 400);
+        }
+
+        // try catch and update the listing 
+
+        try{
+            // Validate and update listing
+        $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'price_per_night' => 'required|numeric',
+                'max_guest' => 'required|integer',
+                'bedrooms' => 'required|integer',
+                'bathrooms' => 'required|integer', 
+                'beds' => 'required|integer',
+                'rules' => 'required|string',
+                'start_date' => 'required|date|after:today',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'location_id' => 'required|integer',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10024|nullable',
+                'categories' => 'array|nullable',
+                'categories.*' => 'integer|exists:categories,id',
+            ]);
+
+            // update and return 200 status 
+            $listing->update($validated);
+
+            return response()->json([
+               'status'=>200,
+               'message'=>'Listing updated successfully.'
+            ],200);
+            
+        }catch(\Throwable $th){
+            // return 500
+            return response()->json([
+               'status'=> 500,
+               'message' => 'Failed to update listing',
+               'error' => $th->getMessage()
+            ], 500);
+
+        }
+
+    }
+
+    // delete listing
+     public function deleteListing($id){
+
+         // cheack if the user is logged in
+         if(!Auth::check()){
+            return response()->json([
+               'status'=> 401,
+               'message' => 'Unauthorized',
+            ], 401); 
+         }
+
+
+         // get the listing by id if not found return 404
+         $listing = Listing::find($id);
+         if(!$listing){
+            return response()->json([
+               'status'=> 404,
+               'message' => 'Listing not found',
+            ], 404); 
+         }
+
+         // check the listing is there is any booking 
+         if($listing->bookings->exists()){
+            return response()->json([
+               'status'=> 400,
+               'error' => 'This listing has bookings and cannot be Deleted.'
+            ] , 400);
+         }
+
+         try{
+            // try to delete the listing 
+            $listing->delete();
+
+            // return 200
+            return response()->json([
+               'status'=> 200,
+               'message' => 'Listing deleted successfully',
+            ], 200);
+            
+         }catch(\Throwable $th){
+            // return 500
+            return response()->json([
+               'status'=> 500,
+               'message' => 'Failed to delete listing',
+               'error' => $th->getMessage()
+            ], 500);
+
+        }
+     }
+
+
+    // reHost listing
+    public function reHostListing($id){
+        
     }
     
 }
