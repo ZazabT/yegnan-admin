@@ -69,6 +69,8 @@ use App\Http\Controllers\Admin\LocationController;
              Route::controller(HostController::class)->group(function () {
                  // get all hosts
                  Route::get('hosts' , 'index')->name('hosts');
+                 // verify a host 
+                 Route::put('/host/verify/{host}' , 'verify')->name('host.verify');
              });
 
 

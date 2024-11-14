@@ -30,7 +30,7 @@ class ListingController extends Controller
          return redirect()->route('listings.index');
      }
      
-     public function confirm(Request $request, Listing $listing)
+     public function confirm(Listing $listing)
      {
          $listing->confirmed = !$listing->confirmed;
          $listing->save();
