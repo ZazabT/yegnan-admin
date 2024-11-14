@@ -41,6 +41,10 @@ Route::post('/listings/create', 'create')->middleware('auth:sanctum');
 Route::get('/listings', 'getAllListings');
    // get listing
 Route::get('/listing/{id}', 'getListing');
+   // update listing
+Route::put('/listing/{id}', 'updateListing')->middleware('auth:sanctum');
+   // delete listing
+Route::delete('/listing/{id}', 'deleteListing')->middleware('auth:sanctum');
 });
 
 

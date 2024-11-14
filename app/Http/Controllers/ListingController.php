@@ -153,47 +153,42 @@ class ListingController extends Controller
     }
 
     // update listing
-    public function updateListing(Request $request , $id){
-        
-        // check if the user is logged in 
-        if(!Auth::check()){
+    public function updateListing(Request $request, $id)
+    {
+        // Check if the user is logged in
+        if (!Auth::check()) {
             return response()->json([
                 'status' => 401,
                 'message' => 'Unauthorized'
-            ],401);
+            ], 401);
         }
-
-
-        // find the listing by id and if not found return 404
+    
+        // Find the listing by id and return 404 if not found
         $listing = Listing::find($id);
-
-        if(!$listing){
+        if (!$listing) {
             return response()->json([
-                 'status'=>404,
-                 'message'=>'Listing not found with this id' . $id
-            ],404);
+                'status' => 404,
+                'message' => 'Listing not found with this id: ' . $id
+            ], 404);
         }
-
-
-        // check if there is a booking for this listing if there is bookig it  can't update 
-        if($listing->bookings->exists()){
+    
+        // Check if there are bookings for this listing, and prevent updates if any exist
+        if ($listing->bookings()->exists()) {
             return response()->json([
-               'status' => 400,
-               'message' => "This listing has bookings and cannot be updated."
+                'status' => 400,
+                'message' => "This listing has bookings and cannot be updated."
             ], 400);
         }
-
-        // try catch and update the listing 
-
-        try{
-            // Validate and update listing
-        $validated = $request->validate([
+    
+        try {
+            // Validate the request data
+            $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'price_per_night' => 'required|numeric',
                 'max_guest' => 'required|integer',
                 'bedrooms' => 'required|integer',
-                'bathrooms' => 'required|integer', 
+                'bathrooms' => 'required|integer',
                 'beds' => 'required|integer',
                 'rules' => 'required|string',
                 'start_date' => 'required|date|after:today',
@@ -203,27 +198,64 @@ class ListingController extends Controller
                 'categories' => 'array|nullable',
                 'categories.*' => 'integer|exists:categories,id',
             ]);
-
-            // update and return 200 status 
-            $listing->update($validated);
-
+    
+            // Update the listing
+            $listing->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'price_per_night' => $request->price_per_night,
+                'max_guest' => $request->max_guest,
+                'bedrooms' => $request->bedrooms,
+                'bathrooms' => $request->bathrooms,
+                'beds' => $request->beds,
+                'rules' => $request->rules,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'location_id' => $request->location_id,
+            ]);
+    
+            // Handle images if any are provided
+            if ($request->hasfile('images')) {
+                $listingName = $listing->title . ' - ';
+                $isMain = true; // Set the first image as the main one
+    
+                foreach ($request->file('images') as $image) {
+                    $imageName = $listingName . time() . '_' . $image->getClientOriginalName();
+                    $imagePath = $image->move(public_path('listing_images'), $imageName);
+                    $image_url = 'listing_images/' . $imageName;
+    
+                    // Store image details in the Item_Image model
+                    Item_Image::create([
+                        'listing_id' => $listing->id,
+                        'image_url' => $image_url,
+                        'isMain' => $isMain,
+                    ]);
+    
+                    // Set the next images as non-main
+                    $isMain = false;
+                }
+            }
+    
+            // Attach the selected categories if provided
+            if ($request->has('categories')) {
+                $listing->categories()->sync($request->categories); // Use sync() instead of attach to update categories
+            }
+    
             return response()->json([
-               'status'=>200,
-               'message'=>'Listing updated successfully.'
-            ],200);
-            
-        }catch(\Throwable $th){
-            // return 500
+                'status' => 200,
+                'message' => 'Listing updated successfully.'
+            ], 200);
+    
+        } catch (\Throwable $th) {
+            // Return 500 error if the update fails
             return response()->json([
-               'status'=> 500,
-               'message' => 'Failed to update listing',
-               'error' => $th->getMessage()
+                'status' => 500,
+                'message' => 'Failed to update listing',
+                'error' => $th->getMessage()
             ], 500);
-
         }
-
     }
-
+    
     // delete listing
      public function deleteListing($id){
 
@@ -246,7 +278,7 @@ class ListingController extends Controller
          }
 
          // check the listing is there is any booking 
-         if($listing->bookings->exists()){
+         if($listing->bookings()->exists()){
             return response()->json([
                'status'=> 400,
                'error' => 'This listing has bookings and cannot be Deleted.'
