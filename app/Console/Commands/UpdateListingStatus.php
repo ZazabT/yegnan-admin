@@ -30,21 +30,21 @@ class UpdateListingStatus extends Command
             })
             ->update(['status' => 'active']);
 
-        // // Update to "soldout" if all dates within start_date and end_date are fully booked
-        // Listing::where('status', '!=', 'soldout')
-        // ->where('start_date', '<=', $now)
-        // ->where('end_date', '>=', $now)
-        // ->whereDoesntHave('bookings', function ($query) use ($now) {
-        //     // Ensure there are no available dates
-        //     $query->where('status', 'accepted')
-        //         ->where(function ($subQuery) use ($now) {
-        //             $subQuery->where(function ($q) use ($now) {
-        //                 $q->where('checkin_date', '>', $now) 
-        //                     ->orWhere('checkout_date', '<', $now); 
-        //             });
-        //         });  
-        // })
-        // ->update(['status' => 'soldout']);
+        // Update to "soldout" if all dates within start_date and end_date are fully booked
+        Listing::where('status', '!=', 'soldout')
+        ->where('start_date', '<=', $now)
+        ->where('end_date', '>=', $now)
+        ->whereDoesntHave('bookings', function ($query) use ($now) {
+            // Ensure there are no available dates
+            $query->where('status', 'accepted')
+                ->where(function ($subQuery) use ($now) {
+                    $subQuery->where(function ($q) use ($now) {
+                        $q->where('checkin_date', '>', $now) 
+                            ->orWhere('checkout_date', '<', $now); 
+                    });
+                });  
+        })
+        ->update(['status' => 'soldout']);
 
         // Update to "inactive" if past the end date
         Listing::where('status', '!=', 'inactive')

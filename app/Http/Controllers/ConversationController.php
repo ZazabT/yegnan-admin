@@ -77,7 +77,7 @@ class ConversationController extends Controller
             // Get all conversations for this user
             $conversations = Conversation::where('host_id', $id)
                 ->orWhere('guest_id', $id)
-                ->with(['host.user', 'guest.user'])
+                ->with(['host.user', 'guest.user' ,'booking' , 'booking.listing' , 'booking.listing.item_images'])
                 ->get();
     
             // Map conversations with the other user and conversation details
@@ -113,20 +113,23 @@ class ConversationController extends Controller
     // Fetch a specific conversation by ID
     public function getConversationMessages($conversationId)
     {
-          // Check if the conversation exists
-        //   $conversation = Conversation::with(['host', 'guest'])->findOrFail($conversationId);
-
-  
-          // Fetch all messages for the conversation
-          $messages = Messages::where('conversation_id', $conversationId)->orderBy('created_at', 'asc')->get();
-
-          // send with the sender info if the sender is not the logged in user 
-  
-          return response()->json([
-              'status' => 200,
-              'messages' => $messages
-          ]);
+        // Fetch the conversation along with the guest data (only once)
+        $conversation = Conversation::with(['guest.user', 'host.user'])->findOrFail($conversationId);
+    
+        // Fetch all messages for the conversation, excluding the guest data from each message
+        $messages = Messages::where('conversation_id', $conversationId)
+                             ->orderBy('created_at', 'asc')
+                             ->get();
+    
+        // Send the guest data and messages in the response
+        return response()->json([
+            'status' => 200,
+            'guest' => $conversation->guest,  
+            'host' => $conversation->host,
+            'messages' => $messages       
+        ]);
     }
+    
 
 
 

@@ -25,6 +25,7 @@ class Listing extends Model
         'host_id',
         'category_id',
         'location_id',
+        'status',
     ];
 
     //Relation with Category
@@ -56,6 +57,13 @@ class Listing extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    // Relation with like
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
 
 

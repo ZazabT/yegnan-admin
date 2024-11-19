@@ -372,9 +372,19 @@ private function checkIfListingIsFullyBooked($listingId)
             ], 404);
         }
 
+
         // reject the booking
         $booking->status = 'rejected';
         $booking->save();
+
+        // after rejecting make the soldout listing status to available
+
+        $listing = $booking->listing;
+        if($listing->status == 'soldout') {
+            $listing->status = 'active';
+            $listing->save();
+        }
+       
         return response()->json([
             'message' => 'Booking rejected',
             'status' => 200

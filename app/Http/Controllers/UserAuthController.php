@@ -179,4 +179,6 @@ class UserAuthController extends Controller
             ],500); // Internal server error
         }
     }
+
+    
 }

@@ -42,7 +42,9 @@ class Conversation extends Model
                 }
 
                 // Relationships with Bookings
-              
+              public function booking(){
+                return $this->belongsTo(Booking::class);
+              }
 
 }
 

@@ -10,11 +10,12 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\UserAuthController;    
 // get user 
-Route::get('/user', function (Request $request) {     return $request->user(); })->middleware('auth:sanctum');  
+Route::get('/user', function (Request $request) { return $request->user(); })->middleware('auth:sanctum');  
 // user authentication routes  
 // register    
 Route::post('/register', [UserAuthController::class, 'register']);   
@@ -46,8 +47,6 @@ Route::put('/listing/{id}', 'updateListing')->middleware('auth:sanctum');
    // delete listing
 Route::delete('/listing/{id}', 'deleteListing')->middleware('auth:sanctum');
 });
-
-
 
 
 // Host routes
@@ -99,3 +98,10 @@ Route::middleware('auth:sanctum')->get('/usersConversationWith/{id}', [Conversat
 
 // Message routes
 Route::middleware('auth:sanctum')->post('/sendmessage', [MessageController::class, 'sendMessage']);
+
+
+
+
+// Like routes
+Route::middleware('auth:sanctum')->post('/listings/{listing}/like', [LikeController::class, 'like']);
+Route::middleware('auth:sanctum')->get('/listings/likedListings/{id}' , [LikeController::class, 'getUserLikedListings']);

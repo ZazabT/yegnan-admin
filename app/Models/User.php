@@ -87,4 +87,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Messages::class , 'sender_id');
     } 
+
+    // Relation with likes 
+    public function likedListings()
+    {
+        return $this->belongsToMany(Listing::class, 'likes')->withTimestamps();
+    }
 }
